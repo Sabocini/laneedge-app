@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lane Edge — Dispatch Smarter on DAT One</title>
+  <meta name="description" content="Lane Edge is a Chrome extension that supercharges DAT One for freight dispatchers. See RPM, deadhead miles, filter loads, and email brokers in seconds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #0047FF;
+      --blue-dark: #0035CC;
+      --blue-light: #EEF3FF;
+      --white: #FFFFFF;
+      --gray-50: #F8F9FB;
+      --gray-100: #F1F3F7;
+      --gray-300: #D1D5DB;
+      --gray-500: #6B7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --radius: 12px;
+      --shadow: 0 4px 24px rgba(0,71,255,0.10);
+      --shadow-lg: 0 8px 48px rgba(0,71,255,0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--gray-900); background: var(--white); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 800; font-size: 1.2rem; color: var(--gray-900);
+    }
+    .nav-logo .logo-icon {
+      width: 38px; height: 38px; background: var(--blue);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo .logo-icon svg { width: 22px; height: 22px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--gray-700); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      background: var(--blue); color: var(--white);
+      padding: 10px 22px; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-cta:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 96px 5% 80px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--blue-light) 0%, var(--white) 100%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); border: 1px solid var(--gray-300);
+      border-radius: 999px; padding: 6px 16px;
+      font-size: 0.82rem; font-weight: 600; color: var(--blue);
+      margin-bottom: 28px; box-shadow: var(--shadow);
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900; line-height: 1.1;
+      color: var(--gray-900); max-width: 780px; margin: 0 auto 20px;
+      letter-spacing: -1.5px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero p {
+      font-size: 1.15rem; color: var(--gray-500);
+      max-width: 560px; margin: 0 auto 40px; font-weight: 400;
+    }
+    .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--blue); color: var(--white);
+      padding: 15px 30px; border-radius: 10px;
+      font-size: 1rem; font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); color: var(--gray-700);
+      border: 1.5px solid var(--gray-300);
+      padding: 15px 28px; border-radius: 10px;
+      font-size: 1rem; font-weight: 600;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+    .hero-mockup {
+      margin: 60px auto 0;
+      max-width: 860px;
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .mockup-bar {
+      background: var(--gray-100);
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--gray-300);
+    }
+    .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .mockup-bar .url-bar {
+      flex: 1; background: var(--white); border: 1px solid var(--gray-300);
+      border-radius: 6px; padding: 5px 12px;
+      font-size: 0.78rem; color: var(--gray-500); margin: 0 8px;
+    }
+    .mockup-content {
+      padding: 24px;
+      background: var(--gray-50);
+      min-height: 260px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .load-card {
+      background: var(--white);
+      border: 1px solid var(--gray-300);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .load-card.highlighted { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,71,255,0.1); }
+    .load-route { font-weight: 700; font-size: 0.9rem; color: var(--gray-900); margin-bottom: 6px; }
+    .load-meta { font-size: 0.78rem; color: var(--gray-500); margin-bottom: 10px; }
+    .load-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .load-badge {
+      font-size: 0.72rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 5px;
+    }
+    .badge-rpm { background: #D1FAE5; color: #065F46; }
+    .badge-dh { background: #FEF3C7; color: #92400E; }
+    .badge-rate { background: var(--blue-light); color: var(--blue); }
+    .filter-panel {
+      background: var(--white);
+      border: 1px solid var(--blue);
+      border-radius: 10px;
+      padding: 16px;
+      grid-column: span 1;
+    }
+    .filter-panel .filter-title { font-weight: 700; font-size: 0.85rem; color: var(--blue); margin-bottom: 12px; }
+    .filter-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--gray-700); margin-bottom: 8px; }
+    .filter-val { font-weight: 700; color: var(--gray-900); }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--gray-900);
+      padding: 28px 5%;
+      display: flex; justify-content: center; gap: 64px; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-item .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--white); }
+    .stat-item .stat-label { font-size: 0.82rem; color: #9CA3AF; font-weight: 500; margin-top: 2px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 88px 5%; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--blue); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 800; letter-spacing: -0.8px;
+      color: var(--gray-900); max-width: 600px;
+    }
+    .section-subtitle {
+      font-size: 1.05rem; color: var(--gray-500);
+      max-width: 560px; margin-top: 12px;
+    }
+    .text-center { text-align: center; }
+    .text-center .section-title,
+    .text-center .section-subtitle { margin-left: auto; margin-right: auto; }
+
+    /* ── FEATURES ── */
+    .features { background: var(--white); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 56px;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      border-color: var(--blue);
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: var(--blue-light);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--gray-900); margin-bottom: 10px; }
+    .feature-card p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.65; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--gray-50); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      margin-top: 56px;
+    }
+    .step { position: relative; }
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--blue); color: var(--white);
+      border-radius: 12px;
+      font-size: 1.2rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .step h3 { font-size: 1.05rem; font-weight: 700; color: var(--gray-900); margin-bottom: 10px; }
+    .step p { font-size: 0.9rem; color: var(--gray-500); line-height: 1.65; }
+
+    /* ── STATS TAB PREVIEW ── */
+    .stats-preview { background: var(--white); }
+    .stats-demo {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .stats-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .stat-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-100);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--blue); }
+    .stat-card .s-label { font-size: 0.78rem; color: var(--gray-500); font-weight: 500; margin-bottom: 6px; }
+    .stat-card .s-value { font-size: 1.8rem; font-weight: 900; color: var(--gray-900); }
+    .stat-card .s-sub { font-size: 0.78rem; color: var(--blue); font-weight: 600; margin-top: 4px; }
+    .stats-info .section-title { max-width: 100%; }
+    .stats-info ul { margin-top: 24px; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .stats-info li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.92rem; color: var(--gray-700); }
+    .stats-info li::before {
+      content: "✓";
+      width: 22px; height: 22px; min-width: 22px;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 50%; font-size: 0.75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--gray-50); }
+    .pricing-cards {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .pricing-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-300);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 320px;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--blue);
+      box-shadow: var(--shadow-lg);
+    }
+    .pricing-popular {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--blue); color: var(--white);
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px;
+      padding: 5px 16px; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .pricing-card h3 { font-size: 1rem; font-weight: 700; color: var(--gray-700); margin-bottom: 6px; }
+    .pricing-price {
+      font-size: 3rem; font-weight: 900; color: var(--gray-900);
+      letter-spacing: -2px; margin: 16px 0 4px;
+      display: flex; align-items: flex-end; gap: 4px;
+    }
+    .pricing-price sup { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; }
+    .pricing-price .period { font-size: 1rem; font-weight: 500; color: var(--gray-500); margin-bottom: 6px; }
+    .pricing-desc { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--gray-100); }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .pricing-features li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--gray-700); }
+    .pricing-features li::before {
+      content: "✓"; width: 20px; height: 20px; min-width: 20px;
+      background: var(--blue-light); color: var(--blue);
+      border-radius: 50%; font-size: 0.72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pricing-btn {
+      width: 100%; padding: 14px;
+      border-radius: 9px; font-size: 0.95rem; font-weight: 700;
+      text-align: center; display: block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .pricing-btn.primary { background: var(--blue); color: var(--white); }
+    .pricing-btn.primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .pricing-btn.secondary { background: var(--gray-100); color: var(--gray-700); border: 1.5px solid var(--gray-300); }
+    .pricing-btn.secondary:hover { background: var(--gray-100); border-color: var(--blue); color: var(--blue); }
+    .pricing-note { text-align: center; margin-top: 24px; font-size: 0.85rem; color: var(--gray-500); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--white); }
+    .faq-list { max-width: 680px; margin: 56px auto 0; display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid var(--gray-100); }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 22px 0; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.98rem; font-weight: 600; color: var(--gray-900);
+      font-family: 'Inter', sans-serif;
+    }
+    .faq-q .icon { font-size: 1.2rem; color: var(--blue); font-weight: 400; transition: transform 0.2s; }
+    .faq-a { display: none; padding-bottom: 20px; font-size: 0.9rem; color: var(--gray-500); line-height: 1.7; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-q .icon { transform: rotate(45deg); }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: var(--blue);
+      padding: 80px 5%;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 900; color: var(--white);
+      letter-spacing: -0.8px; margin-bottom: 16px;
+    }
+    .cta-banner p { color: rgba(255,255,255,0.75); font-size: 1.05rem; margin-bottom: 36px; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--white); color: var(--blue);
+      padding: 16px 34px; border-radius: 10px;
+      font-size: 1rem; font-weight: 800;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      transition: transform 0.15s;
+    }
+    .btn-white:hover { transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--gray-900);
+      padding: 56px 5% 32px;
+      color: #9CA3AF;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; flex-wrap: wrap;
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer-brand .nav-logo { color: var(--white); margin-bottom: 12px; }
+    .footer-brand p { font-size: 0.88rem; max-width: 260px; line-height: 1.6; }
+    .footer-links h4 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--white); margin-bottom: 16px; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 0.88rem; color: #9CA3AF; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid #374151;
+      padding-top: 24px;
+      display: flex; justify-content: space-between; flex-wrap: wrap;
+      gap: 12px; font-size: 0.82rem;
+    }
+    .footer-bottom a { color: #9CA3AF; }
+    .footer-bottom a:hover { color: var(--white); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats-demo { grid-template-columns: 1fr; }
+      .stats-cards { grid-template-columns: 1fr 1fr; }
+      .mockup-content { grid-template-columns: 1fr; }
+      .filter-panel { display: none; }
+      .stats-bar { gap: 32px; }
+      .footer-top { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 12V17H3C3 18.657 4.343 20 6 20C7.657 20 9 18.657 9 17H15C15 18.657 16.343 20 18 20C19.657 20 21 18.657 21 17H23V12L20 7H15V4H1V12ZM6 18C5.448 18 5 17.552 5 17C5 16.448 5.448 16 6 16C6.552 16 7 16.448 7 17C7 17.552 6.552 18 6 18ZM18 18C17.448 18 17 17.552 17 17C17 16.448 17.448 16 18 16C18.552 16 19 16.448 19 17C19 17.552 18.552 18 18 18ZM15 12V9H19.5L21.5 12H15Z" fill="white"/>
+      </svg>
+    </div>
+    Lane Edge
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://chromewebstore.google.com" class="nav-cta">Add to Chrome — Free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span> Built for DAT One Dispatchers
+  </div>
+  <h1>Dispatch Smarter.<br /><span>Book Faster.</span></h1>
+  <p>Lane Edge supercharges your DAT One loadboard with instant RPM, deadhead miles, smart filters, and one-click broker emails — all without leaving the page.</p>
+  <div class="hero-buttons">
+    <a href="https://chromewebstore.google.com" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12" stroke="white" stroke-width="2"/></svg>
+      Add to Chrome — It's Free
+    </a>
+    <a href="#features" class="btn-secondary">See Features →</a>
+  </div>
+
+  <!-- BROWSER MOCKUP -->
+  <div class="hero-mockup">
+    <div class="mockup-bar">
+      <div class="mockup-dot" style="background:#FF5F57;"></div>
+      <div class="mockup-dot" style="background:#FFBD2E;"></div>
+      <div class="mockup-dot" style="background:#28CA41;"></div>
+      <div class="url-bar">dat.com/load-search</div>
+    </div>
+    <div class="mockup-content">
+      <div class="load-card highlighted">
+        <div class="load-route">Chicago, IL → Atlanta, GA</div>
+        <div class="load-meta">1,092 mi · 48ft · Van</div>
+        <div class="load-stats">
+          <span class="load-badge badge-rate">$2,850</span>
+          <span class="load-badge badge-rpm">$2.61/mi</span>
+          <span class="load-badge badge-dh">DH 12mi</span>
+        </div>
+      </div>
+      <div class="load-card">
+        <div class="load-route">Dallas, TX → Denver, CO</div>
+        <div class="load-meta">968 mi · 53ft · Van</div>
+        <div class="load-stats">
+          <span class="load-badge badge-rate">$2,100</span>
+          <span class="load-badge badge-rpm">$2.17/mi</span>
+          <span class="load-badge badge-dh">DH 34mi</span>
+        </div>
+      </div>
+      <div class="filter-panel">
+        <div class="filter-title">🎛 Lane Edge Filters</div>
+        <div class="filter-row"><span>Min RPM</span><span class="filter-val">$2.50</span></div>
+        <div class="filter-row"><span>Min Rate</span><span class="filter-val">$2,500</span></div>
+        <div class="filter-row"><span>Max DH</span><span class="filter-val">25 mi</span></div>
+        <div class="filter-row"><span>Min Miles</span><span class="filter-val">500 mi</span></div>
+        <div style="margin-top:12px;padding:8px;background:#D1FAE5;border-radius:7px;font-size:0.75rem;font-weight:700;color:#065F46;text-align:center;">
+          ✓ 1 of 3 loads matches
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">2–5x</div>
+    <div class="stat-label">Faster load evaluation</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">$0</div>
+    <div class="stat-label">To start — free trial</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">DAT One</div>
+    <div class="stat-label">Native integration</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Powerful features</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Everything a dispatcher needs, built right into DAT One.</h2>
+  <p class="section-subtitle">No new tabs, no copy-pasting. Lane Edge works directly inside your loadboard so you never break flow.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Instant RPM & Deadhead</h3>
+      <p>See Rate Per Mile and deadhead miles calculated automatically on every load. No more mental math or switching tabs — the numbers are right there.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎛️</div>
+      <h3>Smart Load Filtering</h3>
+      <p>Set your thresholds once — min RPM, min rate, min miles, max miles — and Lane Edge filters out every load that doesn't meet your standards automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✉️</div>
+      <h3>Quick Email to Brokers</h3>
+      <p>Fire off outreach emails to brokers in seconds without leaving the loadboard. Templates, prefilled load details, and one-click sending built right in.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>Dispatcher Stats Dashboard</h3>
+      <p>Track emails sent, MCs copied, loads viewed, and more — by day, week, or month. Know exactly how productive you're being and where to improve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="text-center">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Up and running in 60 seconds.</h2>
+    <p class="section-subtitle">Lane Edge installs like any Chrome extension and activates automatically when you open DAT One.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Install from Chrome Web Store</h3>
+      <p>Click "Add to Chrome" and Lane Edge installs in seconds. No account required to start your free trial.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Open DAT One & Set Your Filters</h3>
+      <p>Head to your DAT One loadboard. Lane Edge automatically activates. Set your min RPM, min rate, and mileage preferences in the sidebar.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Dispatch Faster Than Ever</h3>
+      <p>Every load now shows RPM and deadhead instantly. Filter out the junk, email the best brokers, and book more loads in less time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS PREVIEW -->
+<section class="stats-preview" id="stats">
+  <div class="stats-demo">
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="s-label">Emails Sent Today</div>
+        <div class="s-value">47</div>
+        <div class="s-sub">↑ 12 from yesterday</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Emails This Week</div>
+        <div class="s-value">218</div>
+        <div class="s-sub">Personal best 🏆</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">MCs Copied Today</div>
+        <div class="s-value">31</div>
+        <div class="s-sub">↑ 8 from yesterday</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Loads Viewed Today</div>
+        <div class="s-value">184</div>
+        <div class="s-sub">Avg RPM: $2.74</div>
+      </div>
+    </div>
+    <div class="stats-info">
+      <div class="section-label">Stats Tab</div>
+      <h2 class="section-title">Know your numbers. Improve every day.</h2>
+      <p class="section-subtitle">The Lane Edge Stats tab tracks your activity automatically so you can see what's working.</p>
+      <ul>
+        <li>Emails sent by day, week, and month</li>
+        <li>MCs copied and loads viewed over time</li>
+        <li>Average RPM of loads you engaged with</li>
+        <li>Peak productivity hours</li>
+        <li>Unique brokers contacted</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="text-center">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, transparent pricing.</h2>
+    <p class="section-subtitle">Start free, no credit card required. Cancel anytime.</p>
+  </div>
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <h3>Free Trial</h3>
+      <div class="pricing-price"><sup>$</sup>0 <span class="period">/ 7 days</span></div>
+      <p class="pricing-desc">Full access to every feature, no credit card needed. See what Lane Edge can do for your workflow before paying anything.</p>
+      <ul class="pricing-features">
+        <li>RPM + Deadhead on every load</li>
+        <li>Smart load filtering</li>
+        <li>Quick broker email</li>
+        <li>Stats dashboard</li>
+        <li>7 days full access</li>
+      </ul>
+      <a href="https://chromewebstore.google.com" class="pricing-btn secondary">Start Free Trial</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-popular">Most Popular</div>
+      <h3>Pro</h3>
+      <div class="pricing-price"><sup>$</sup>15 <span class="period">/ month</span></div>
+      <p class="pricing-desc">Everything you need to run a faster, smarter dispatch operation. Billed monthly, cancel anytime.</p>
+      <ul class="pricing-features">
+        <li>RPM + Deadhead on every load</li>
+        <li>Smart load filtering</li>
+        <li>Quick broker email</li>
+        <li>Full stats dashboard</li>
+        <li>Priority support</li>
+        <li>All future features included</li>
+      </ul>
+      <a href="https://chromewebstore.google.com" class="pricing-btn primary">Get Started — $15/mo</a>
+    </div>
+  </div>
+  <p class="pricing-note">💳 No contracts. Cancel anytime. Billed monthly.</p>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="text-center">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions.</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Does Lane Edge work with DAT One? <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Yes — Lane Edge is built specifically for the DAT One loadboard. It injects directly into the DAT One interface so everything works seamlessly without switching tabs or windows.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need a DAT subscription to use Lane Edge? <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Yes, you need an active DAT One subscription. Lane Edge is an enhancement tool that works on top of your existing DAT One account — it doesn't replace it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How does the free trial work? <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Your free trial gives you 7 days of full access to every Lane Edge feature with no credit card required. When your trial ends, you can subscribe for $15/month to keep using it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is my data safe? <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Yes. Lane Edge only reads load data from DAT One to display RPM and filters. Your preferences are stored locally in your browser. We do not sell your data to third parties. Read our full <a href="https://sabocini.github.io/laneedge-privacy/privacy-policy.html" style="color:var(--blue);">Privacy Policy</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can I cancel anytime? <span class="icon">+</span>
+      </button>
+      <div class="faq-a">Absolutely. There are no contracts or commitments. You can cancel your subscription at any time and you'll retain access through the end of your billing period.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        I have a question not listed here. <span class="icon">+</span>
+      </button>
+      <div class="faq-a">No problem — reach out to us at <a href="mailto:support@laneedge.app" style="color:var(--blue);">support@laneedge.app</a> and we'll get back to you quickly.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Ready to dispatch faster?</h2>
+  <p>Join dispatchers already using Lane Edge to find better loads and book more freight.</p>
+  <a href="https://chromewebstore.google.com" class="btn-white">
+    🚚 Start Your Free Trial
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path d="M1 12V17H3C3 18.657 4.343 20 6 20C7.657 20 9 18.657 9 17H15C15 18.657 16.343 20 18 20C19.657 20 21 18.657 21 17H23V12L20 7H15V4H1V12ZM6 18C5.448 18 5 17.552 5 17C5 16.448 5.448 16 6 16C6.552 16 7 16.448 7 17C7 17.552 6.552 18 6 18ZM18 18C17.448 18 17 17.552 17 17C17 16.448 17.448 16 18 16C18.552 16 19 16.448 19 17C19 17.552 18.552 18 18 18ZM15 12V9H19.5L21.5 12H15Z" fill="white"/>
+          </svg>
+        </div>
+        Lane Edge
+      </div>
+      <p>Supercharging freight dispatchers on DAT One. Built by dispatchers, for dispatchers.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#stats">Stats Tab</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="mailto:support@laneedge.app">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="https://sabocini.github.io/laneedge-privacy/privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Lane Edge. All rights reserved.</span>
+    <span><a href="https://sabocini.github.io/laneedge-privacy/privacy-policy.html">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
