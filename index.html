@@ -159,15 +159,54 @@
     .smi-l { font-size: .7rem; color: var(--gray-500); font-weight: 500; margin-bottom: 3px; }
     .smi-v { font-size: 1.3rem; font-weight: 900; color: var(--gray-900); letter-spacing: -.3px; }
 
-    /* ── BEFORE / AFTER SECTION ── */
+    /* ── BEFORE / AFTER SLIDER ── */
     .before-after { background: var(--white); }
-    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
-    .ba-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-200); box-shadow: var(--shadow-md); }
-    .ba-card img { width: 100%; display: block; }
-    .ba-label { padding: 16px 24px; background: var(--gray-50); border-bottom: 1px solid var(--gray-200); font-size: 1rem; font-weight: 800; color: var(--gray-700); display: flex; align-items: center; gap: 10px; letter-spacing: -.2px; }
-    .ba-label .ba-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .ba-label.before .ba-dot { background: var(--gray-400, #9CA3AF); }
-    .ba-label.after  .ba-dot { background: var(--blue); }
+    .slider-wrap {
+      position: relative; margin: 48px auto 0; max-width: 960px;
+      border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--gray-200); box-shadow: var(--shadow-lg);
+      user-select: none; -webkit-user-select: none; cursor: col-resize;
+    }
+    .slider-wrap .img-after { display: block; width: 100%; height: auto; }
+    .slider-clip {
+      position: absolute; top: 0; left: 0; bottom: 0;
+      overflow: hidden; width: 50%;
+    }
+    .slider-clip .img-before { display: block; width: 960px; max-width: none; height: auto; }
+    .slider-line {
+      position: absolute; top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 3px; background: var(--blue); pointer-events: none;
+    }
+    .slider-handle {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px; height: 46px;
+      background: var(--blue); border-radius: 50%;
+      border: 3px solid var(--white);
+      box-shadow: 0 2px 16px rgba(0,71,255,.4), 0 2px 8px rgba(0,0,0,.2);
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .slider-handle svg { width: 20px; height: 20px; }
+    .slider-label {
+      position: absolute; top: 16px;
+      background: rgba(0,0,0,.52); backdrop-filter: blur(8px);
+      color: #fff; font-size: .82rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 999px;
+      display: flex; align-items: center; gap: 7px;
+      pointer-events: none; letter-spacing: .2px;
+    }
+    .slider-label .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .slider-label-before { left: 16px; }
+    .slider-label-after  { right: 16px; }
+    .slider-label-before .dot { background: #9CA3AF; }
+    .slider-label-after  .dot { background: #60A5FA; }
+    .slider-hint {
+      text-align: center; margin-top: 14px;
+      font-size: .8rem; color: var(--gray-500);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
 
     /* ── MAPS FEATURE ── */
     .maps-section { background: var(--gray-50); }
@@ -425,31 +464,51 @@
   </div>
 </section>
 
-<!-- ── BEFORE / AFTER ── -->
+<!-- ── BEFORE / AFTER SLIDER ── -->
 <section class="section before-after">
   <div class="text-center">
     <div class="section-label">See the Difference</div>
     <h2 class="section-title">DAT One before &amp; after Lane Edge.</h2>
-    <p class="section-sub">Lane Edge injects directly into DAT One &#8212; adding RPM columns, color-coded rates, filter bars, and company names without changing anything else.</p>
+    <p class="section-sub">Drag the slider to see how Lane Edge instantly adds RPM columns, color-coded rates, filter bars, and company names to your loadboard.</p>
   </div>
-  <div class="ba-grid">
-    <div class="ba-card">
-      <div class="ba-label before"><div class="ba-dot"></div> Before Lane Edge</div>
-      <img src="img/loadboard-before.png" alt="DAT One without Lane Edge" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-      <div class="screenshot-placeholder" style="display:none;min-height:280px">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Save as <strong>img/loadboard-before.png</strong>
+
+  <!-- Slider -->
+  <div class="slider-wrap" id="baSlider">
+    <!-- AFTER image (base layer, full width) -->
+    <img class="img-after" src="img/loadboard-after-full.png"
+         alt="DAT One with Lane Edge"
+         onerror="this.src='';this.alt='';this.closest('.slider-wrap').querySelector('.slider-placeholder').style.display='flex'" />
+
+    <!-- BEFORE image (clipped left half) -->
+    <div class="slider-clip" id="sliderClip">
+      <img class="img-before" src="img/loadboard-before.png" alt="DAT One without Lane Edge" />
+    </div>
+
+    <!-- Divider -->
+    <div class="slider-line" id="sliderLine">
+      <div class="slider-handle">
+        <!-- left/right arrows icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/>
+        </svg>
       </div>
     </div>
-    <div class="ba-card">
-      <div class="ba-label after"><div class="ba-dot"></div> After Lane Edge</div>
-      <img src="img/loadboard-after-full.png" alt="DAT One with Lane Edge active" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-      <div class="screenshot-placeholder" style="display:none;min-height:280px">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Save as <strong>img/loadboard-after-full.png</strong>
-      </div>
+
+    <!-- Labels -->
+    <div class="slider-label slider-label-before"><div class="dot"></div>Before Lane Edge</div>
+    <div class="slider-label slider-label-after"><div class="dot"></div>After Lane Edge</div>
+
+    <!-- Placeholder shown only when both images fail -->
+    <div class="slider-placeholder screenshot-placeholder" style="display:none;min-height:320px;position:relative;z-index:2">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Save <strong>img/loadboard-before.png</strong> &amp; <strong>img/loadboard-after-full.png</strong> to enable the slider
     </div>
   </div>
+
+  <p class="slider-hint">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
+    Drag the handle left or right to compare
+  </p>
 </section>
 
 <!-- ── MAPS FEATURE ── -->
@@ -697,6 +756,7 @@
 </footer>
 
 <script>
+  /* ── FAQ ── */
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
     const open = item.classList.contains('open');
@@ -704,12 +764,50 @@
     if (!open) item.classList.add('open');
   }
 
+  /* ── TABS ── */
   function switchTab(id, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     btn.classList.add('active');
   }
+
+  /* ── BEFORE / AFTER SLIDER ── */
+  (function () {
+    const wrap  = document.getElementById('baSlider');
+    const clip  = document.getElementById('sliderClip');
+    const line  = document.getElementById('sliderLine');
+    if (!wrap || !clip || !line) return;
+
+    let dragging = false;
+
+    function setPos(clientX) {
+      const rect = wrap.getBoundingClientRect();
+      let pct = (clientX - rect.left) / rect.width;
+      pct = Math.min(Math.max(pct, 0.02), 0.98);
+      const pctStr = (pct * 100).toFixed(2) + '%';
+      clip.style.width = pctStr;
+      line.style.left  = pctStr;
+    }
+
+    /* Mouse */
+    wrap.addEventListener('mousedown', e => { dragging = true; setPos(e.clientX); e.preventDefault(); });
+    window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
+    window.addEventListener('mouseup',   () => { dragging = false; });
+
+    /* Touch */
+    wrap.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchend',  () => { dragging = false; });
+
+    /* Sync img-before width to container so it never stretches */
+    function syncWidth() {
+      const w = wrap.offsetWidth;
+      wrap.querySelector('.img-before').style.width = w + 'px';
+    }
+    syncWidth();
+    window.addEventListener('resize', syncWidth);
+  })();
 </script>
 </body>
 </html>
