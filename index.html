@@ -302,6 +302,7 @@
     .pricing-section { background: var(--gray-50); }
     .pricing-row { display: flex; gap: 24px; justify-content: center; margin-top: 52px; flex-wrap: wrap; align-items: flex-start; }
     .p-card { background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-xl); padding: 36px 32px; width: 320px; position: relative; transition: border-color .22s, box-shadow .22s, transform .22s; }
+    .p-card:not(.featured) { margin-top: 37px; }
     .p-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
 
     /* ── Featured / Pro card ── */
@@ -363,6 +364,67 @@
     .faq-a { display: none; padding-bottom: 20px; font-size: .875rem; color: var(--gray-500); line-height: 1.75; }
     .faq-item.open .faq-a { display: block; }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ── REFERRAL BANNER ── */
+    .referral-section {
+      background: var(--white);
+      border-top: 1px solid var(--gray-200);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 56px 5%;
+    }
+    .referral-card {
+      max-width: 780px; margin: 0 auto;
+      background: var(--blue-subtle);
+      border: 1.5px solid rgba(0,71,255,0.14);
+      border-radius: var(--radius-xl);
+      padding: 48px 52px;
+      display: flex; align-items: center; gap: 40px;
+      position: relative; overflow: hidden;
+    }
+    .referral-card::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,71,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .referral-icon-wrap {
+      width: 72px; height: 72px; flex-shrink: 0;
+      background: var(--blue); border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-blue);
+    }
+    .referral-icon-wrap svg { width: 34px; height: 34px; stroke: white; }
+    .referral-body { flex: 1; }
+    .referral-eyebrow {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--blue); margin-bottom: 8px;
+    }
+    .referral-heading {
+      font-size: 1.55rem; font-weight: 900; color: var(--gray-900);
+      letter-spacing: -.5px; line-height: 1.2; margin-bottom: 10px;
+    }
+    .referral-desc { font-size: .9rem; color: var(--gray-500); line-height: 1.65; }
+    .referral-desc strong { color: var(--gray-900); }
+    .referral-action { flex-shrink: 0; }
+    .btn-referral {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: var(--white);
+      padding: 13px 24px; border-radius: var(--radius-md);
+      font-size: .9rem; font-weight: 700;
+      box-shadow: var(--shadow-blue);
+      transition: background .18s, transform .15s;
+      white-space: nowrap;
+    }
+    .btn-referral:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .referral-terms {
+      text-align: center; margin-top: 14px;
+      font-size: .75rem; color: var(--gray-400, #9CA3AF);
+    }
+    @media (max-width: 700px) {
+      .referral-card { flex-direction: column; padding: 36px 28px; text-align: center; }
+      .referral-icon-wrap { margin: 0 auto; }
+    }
 
     /* ── CTA ── */
     .cta-section { background: var(--blue); padding: 88px 5%; text-align: center; }
@@ -429,12 +491,12 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-pill fade-up d1"><div class="dot"></div> Built for DAT One Dispatchers</div>
-  <h1 class="fade-up d2">Dispatch Smarter.<br /><span class="blue">Book Faster.</span></h1>
+  <h1 class="fade-up d2">Stop Doing Mental Math<br /><span class="blue">on DAT.</span></h1>
   <p class="hero-sub fade-up d3">Lane Edge supercharges your DAT One loadboard with instant RPM, deadhead miles, smart filters, and one-click broker emails &#8212; all without leaving the page.</p>
   <div class="hero-actions fade-up d4">
     <a href="https://chromewebstore.google.com" class="btn-primary">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12" stroke="white" stroke-width="2"/></svg>
-      Add to Chrome &#8212; It&rsquo;s Free
+      Supercharge My Loadboard
     </a>
     <a href="#features" class="btn-ghost">See Features &#8594;</a>
   </div>
@@ -836,6 +898,28 @@
   </div>
 </section>
 
+<!-- ── REFERRAL ── -->
+<section class="referral-section" id="referral">
+  <div class="referral-card">
+    <div class="referral-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <div class="referral-body">
+      <div class="referral-eyebrow">Refer a Friend</div>
+      <div class="referral-heading">Get 1 Month Free for Every Dispatcher You Refer</div>
+      <p class="referral-desc">Know a fellow dispatcher grinding on DAT? Send them your link. When they subscribe, <strong>you both get a free month</strong> &#8212; no limits on how many friends you refer.</p>
+    </div>
+    <div class="referral-action">
+      <a href="mailto:support@laneedge.app?subject=Referral%20Program" class="btn-referral">Get My Referral Link &#8594;</a>
+    </div>
+  </div>
+  <p class="referral-terms">Share in Facebook groups, at truck stops, or anywhere dispatchers connect. Every referral counts.</p>
+</section>
+
 <!-- ── CTA ── -->
 <section class="cta-section">
   <h2>Ready to dispatch faster?</h2>
@@ -866,6 +950,7 @@
         <li><a href="#how">How It Works</a></li>
         <li><a href="#stats">Stats</a></li>
         <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#referral">Refer a Friend 🎁</a></li>
       </ul>
     </div>
     <div class="footer-col">
