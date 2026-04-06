@@ -79,8 +79,19 @@
     .hero h1 .blue { color: var(--blue); }
     .hero-sub { font-size: 1.1rem; color: var(--gray-500); line-height: 1.7; max-width: 520px; margin: 0 auto 40px; }
     .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 9px; background: var(--blue); color: var(--white); padding: 13px 28px; border-radius: var(--radius-md); font-size: .95rem; font-weight: 700; box-shadow: var(--shadow-blue); transition: background .18s, transform .15s, box-shadow .18s; }
-    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,71,255,.28); }
+    @keyframes btnBounce {
+      0%   { transform: translateY(0) scale(1); box-shadow: var(--shadow-blue); }
+      30%  { transform: translateY(-5px) scale(1.03); box-shadow: 0 16px 44px rgba(0,71,255,.32); }
+      50%  { transform: translateY(-2px) scale(1.015); box-shadow: 0 10px 32px rgba(0,71,255,.22); }
+      70%  { transform: translateY(-4px) scale(1.025); box-shadow: 0 14px 40px rgba(0,71,255,.28); }
+      100% { transform: translateY(0) scale(1); box-shadow: var(--shadow-blue); }
+    }
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: var(--shadow-blue), 0 0 0 0 rgba(0,71,255,.35); }
+      50%       { box-shadow: var(--shadow-blue), 0 0 0 8px rgba(0,71,255,0); }
+    }
+    .btn-primary { display: inline-flex; align-items: center; gap: 9px; background: var(--blue); color: var(--white); padding: 13px 28px; border-radius: var(--radius-md); font-size: .95rem; font-weight: 700; box-shadow: var(--shadow-blue); transition: background .18s, transform .15s, box-shadow .18s; animation: btnBounce 2.8s ease-in-out 1.2s infinite, btnPulse 2.8s ease-in-out 1.2s infinite; }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-3px) scale(1.04); box-shadow: 0 16px 48px rgba(0,71,255,.32); animation: none; }
     .btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: var(--white); color: var(--gray-700); border: 1.5px solid var(--gray-300); padding: 13px 24px; border-radius: var(--radius-md); font-size: .95rem; font-weight: 600; transition: border-color .18s, color .18s; }
     .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
 
