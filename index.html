@@ -437,6 +437,29 @@
       .referral-icon-wrap { margin: 0 auto; }
     }
 
+    /* ── PRIVACY MODAL ── */
+    .pp-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.52); backdrop-filter: blur(4px); z-index: 9000; align-items: center; justify-content: center; padding: 24px; }
+    .pp-overlay.open { display: flex; }
+    .pp-modal { background: var(--white); border-radius: var(--radius-xl); max-width: 740px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 32px 80px rgba(0,0,0,.22); overflow: hidden; animation: fadeUp .25s ease; }
+    .pp-header { background: var(--blue); padding: 28px 36px 24px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .pp-header-left h2 { font-size: 1.3rem; font-weight: 800; color: var(--white); letter-spacing: -.4px; }
+    .pp-header-left p { font-size: .82rem; color: rgba(255,255,255,.7); margin-top: 2px; }
+    .pp-close { background: rgba(255,255,255,.18); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; color: white; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink: 0; }
+    .pp-close:hover { background: rgba(255,255,255,.32); }
+    .pp-body { overflow-y: auto; padding: 36px 36px 44px; }
+    .pp-updated { font-size: .8rem; color: var(--gray-500); margin-bottom: 20px; }
+    .pp-intro { font-size: .95rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 8px; }
+    .pp-body h3 { font-size: 1rem; font-weight: 700; color: var(--gray-900); margin: 32px 0 10px; padding-bottom: 8px; border-bottom: 1.5px solid var(--gray-200); }
+    .pp-body p { font-size: .9rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 12px; }
+    .pp-body ul { margin: 0 0 14px 18px; }
+    .pp-body ul li { font-size: .9rem; color: var(--gray-700); line-height: 1.7; margin-bottom: 6px; }
+    .pp-badge { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: .75rem; font-weight: 700; padding: 3px 11px; border-radius: 999px; margin-bottom: 6px; letter-spacing: .2px; }
+    .pp-body a { color: var(--blue); }
+    @media (max-width: 640px) {
+      .pp-header { padding: 22px 22px 20px; }
+      .pp-body { padding: 24px 22px 36px; }
+    }
+
     /* ── CTA ── */
     .cta-section { background: var(--blue); padding: 88px 5%; text-align: center; }
     .cta-section h2 { font-size: clamp(1.75rem, 3vw, 2.4rem); font-weight: 900; color: var(--white); letter-spacing: -.8px; margin-bottom: 14px; }
@@ -896,7 +919,7 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is my data safe?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Yes. Lane Edge only reads load data from DAT One to display RPM and filters. Your preferences are stored locally in your browser. We do not sell your data. Read our full <a href="privacy-policy.html" style="color:var(--blue);">Privacy Policy</a>.</div>
+      <div class="faq-a">Yes. Lane Edge only reads load data from DAT One to display RPM and filters. Your preferences are stored locally in your browser. We do not sell your data. Read our full <a href="#" onclick="document.getElementById('ppOverlay').classList.add('open');return false;" style="color:var(--blue);">Privacy Policy</a>.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-icon">+</span></button>
@@ -942,6 +965,133 @@
   </div>
 </section>
 
+<!-- ── TERMS OF SERVICE MODAL ── -->
+<div class="pp-overlay" id="tosOverlay" onclick="closeTOS(event)">
+  <div class="pp-modal">
+    <div class="pp-header">
+      <div class="pp-header-left">
+        <h2>Terms of Service</h2>
+        <p>Lane Edge Chrome Extension</p>
+      </div>
+      <button class="pp-close" onclick="document.getElementById('tosOverlay').classList.remove('open')" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="pp-body">
+      <p class="pp-updated">Last updated: April 1, 2026</p>
+      <p class="pp-intro">Please read these Terms of Service carefully before using the Lane Edge Chrome extension. By installing or using Lane Edge, you agree to be bound by these terms.</p>
+
+      <h3>1. Acceptance of Terms</h3>
+      <p>By installing, accessing, or using Lane Edge ("the Extension"), you agree to these Terms of Service and our Privacy Policy. If you do not agree, do not install or use the Extension.</p>
+
+      <h3>2. Description of Service</h3>
+      <p>Lane Edge is a Chrome browser extension that enhances the DAT One freight loadboard by providing instant RPM calculations, deadhead mileage estimates, smart filters, broker email templates, and dispatcher statistics. Lane Edge is an independent product and is not affiliated with, endorsed by, or sponsored by DAT Solutions, LLC.</p>
+
+      <h3>3. Eligibility</h3>
+      <p>You must be at least 18 years old and use the Extension solely for professional freight dispatching purposes. By using Lane Edge you represent that you meet these requirements.</p>
+
+      <h3>4. Free Trial &amp; Subscription</h3>
+      <p>Lane Edge offers a limited free trial period. After the trial ends, continued use requires a paid subscription at the current listed price. Subscriptions are billed monthly and renew automatically until cancelled. You may cancel at any time through your account or by contacting support.</p>
+      <p>All payments are processed securely through Stripe. Lane Edge does not store your payment card information.</p>
+
+      <h3>5. Referral Program</h3>
+      <p>Users may earn one free month of service for each new subscriber referred using their unique referral link. Referral credits are applied after the referred user completes their first paid billing cycle. Credits have no cash value and cannot be transferred. Lane Edge reserves the right to modify or discontinue the referral program at any time.</p>
+
+      <h3>6. Acceptable Use</h3>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Reverse-engineer, decompile, or attempt to extract the source code of the Extension</li>
+        <li>Use the Extension to scrape, harvest, or store DAT One data beyond its intended display purpose</li>
+        <li>Resell, sublicense, or redistribute the Extension or any portion of it</li>
+        <li>Use the Extension in any manner that violates DAT One's own terms of service</li>
+        <li>Attempt to circumvent license validation or trial limitations</li>
+      </ul>
+
+      <h3>7. Intellectual Property</h3>
+      <p>All content, design, code, and branding within Lane Edge are the exclusive property of Lane Edge and its creators. Nothing in these Terms grants you ownership of any intellectual property rights in the Extension.</p>
+
+      <h3>8. Disclaimer of Warranties</h3>
+      <p>Lane Edge is provided "as is" without warranties of any kind, express or implied. We do not guarantee that the Extension will be error-free, uninterrupted, or compatible with all versions of DAT One or Chrome. RPM and mileage calculations are estimates and should not be the sole basis for business decisions.</p>
+
+      <h3>9. Limitation of Liability</h3>
+      <p>To the fullest extent permitted by law, Lane Edge and its creators shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Extension, including lost profits or data, even if advised of the possibility of such damages. Our total liability shall not exceed the amount you paid for the Extension in the three months preceding the claim.</p>
+
+      <h3>10. Termination</h3>
+      <p>We may suspend or terminate your access to the Extension at any time for violations of these Terms. You may stop using the Extension at any time by uninstalling it. Termination does not entitle you to a refund except where required by applicable law.</p>
+
+      <h3>11. Changes to These Terms</h3>
+      <p>We may update these Terms from time to time. Continued use of the Extension after changes are posted constitutes acceptance of the revised Terms. We will note the date of the most recent update at the top of this page.</p>
+
+      <h3>12. Governing Law</h3>
+      <p>These Terms are governed by the laws of the United States. Any disputes shall be resolved in the courts of competent jurisdiction.</p>
+
+      <h3>13. Contact Us</h3>
+      <p>Questions about these Terms? Reach us at <a href="mailto:support@laneedge.com">support@laneedge.com</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRIVACY POLICY MODAL ── -->
+<div class="pp-overlay" id="ppOverlay" onclick="closePP(event)">
+  <div class="pp-modal">
+    <div class="pp-header">
+      <div class="pp-header-left">
+        <h2>Privacy Policy</h2>
+        <p>Lane Edge Chrome Extension</p>
+      </div>
+      <button class="pp-close" onclick="document.getElementById('ppOverlay').classList.remove('open')" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="pp-body">
+      <p class="pp-updated">Last updated: April 1, 2026</p>
+      <p class="pp-intro">Lane Edge is committed to protecting your privacy. This policy explains how our Chrome extension collects, uses, and safeguards information when you use Lane Edge on the DAT One loadboard.</p>
+
+      <h3>1. Information We Collect</h3>
+      <p><span class="pp-badge">Email Address</span></p>
+      <p>Used for the quick email feature to contact brokers. Not stored beyond what is needed to deliver this feature.</p>
+      <p><span class="pp-badge">DAT One Page Data</span></p>
+      <p>Load info (rates, mileage, origin/destination) is read to calculate RPM and deadhead miles and apply filters. Processed locally and not transmitted to our servers.</p>
+      <p><span class="pp-badge">User Preferences</span></p>
+      <p>Filter settings are saved locally in your browser using Chrome storage. Not sent to our servers.</p>
+      <p><span class="pp-badge">License and Trial Status</span></p>
+      <p>A unique identifier is sent to our servers to validate your free trial or subscription. No extra personal data is transmitted.</p>
+      <p><span class="pp-badge">Usage Analytics</span></p>
+      <p>Anonymous, aggregated data about feature usage is collected to improve the product. This does not identify you personally.</p>
+
+      <h3>2. How We Use Your Information</h3>
+      <ul>
+        <li>To provide and operate Lane Edge and its features</li>
+        <li>To validate your free trial or subscription</li>
+        <li>To send emails on your behalf via the quick email feature</li>
+        <li>To analyze anonymous usage and improve the product</li>
+        <li>To communicate about your account or subscription if needed</li>
+      </ul>
+
+      <h3>3. Data Sharing and Third Parties</h3>
+      <p>We do not sell or share your personal data with third parties for advertising. We may share data only with trusted service providers acting on our behalf, or if required by law.</p>
+
+      <h3>4. Data Retention</h3>
+      <p>Server-side data is kept only as long as needed to operate the service. Local preferences can be cleared by uninstalling the extension or clearing extension storage.</p>
+
+      <h3>5. Security</h3>
+      <p>All data transmitted to our servers is encrypted via HTTPS. We take reasonable technical measures to protect your information.</p>
+
+      <h3>6. Your Rights</h3>
+      <ul>
+        <li>Request access to or deletion of your data</li>
+        <li>Opt out of analytics collection</li>
+        <li>Ask questions about how your data is used</li>
+      </ul>
+
+      <h3>7. Children's Privacy</h3>
+      <p>Lane Edge is intended for professional freight dispatchers and is not directed at children under 13.</p>
+
+      <h3>8. Changes to This Policy</h3>
+      <p>We may update this policy and will note the date of changes at the top of this page.</p>
+
+      <h3>9. Contact Us</h3>
+      <p>Lane Edge &mdash; Email: <a href="mailto:support@laneedge.com">support@laneedge.com</a></p>
+    </div>
+  </div>
+</div>
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-top">
@@ -974,18 +1124,36 @@
     <div class="footer-col">
       <h4>Legal</h4>
       <ul>
-        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#" onclick="document.getElementById('ppOverlay').classList.add('open');return false;">Privacy Policy</a></li>
+        <li><a href="#" onclick="document.getElementById('tosOverlay').classList.add('open');return false;">Terms of Service</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
     <span>&copy; 2026 Lane Edge. All rights reserved.</span>
-    <span><a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="#">Terms</a></span>
+    <span><a href="#" onclick="document.getElementById('ppOverlay').classList.add('open');return false;">Privacy Policy</a> &middot; <a href="#" onclick="document.getElementById('tosOverlay').classList.add('open');return false;">Terms</a></span>
   </div>
 </footer>
 
 <script>
+  /* ── PRIVACY MODAL ── */
+  function closePP(e) {
+    if (e.target === document.getElementById('ppOverlay')) {
+      document.getElementById('ppOverlay').classList.remove('open');
+    }
+  }
+  function closeTOS(e) {
+    if (e.target === document.getElementById('tosOverlay')) {
+      document.getElementById('tosOverlay').classList.remove('open');
+    }
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.getElementById('ppOverlay').classList.remove('open');
+      document.getElementById('tosOverlay').classList.remove('open');
+    }
+  });
+
   /* ── FAQ ── */
   function toggleFaq(btn) {
     const item = btn.closest('.faq-item');
