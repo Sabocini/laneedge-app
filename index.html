@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NPF2G850SE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NPF2G850SE');
+    gtag('config', 'G-3KQTYS163C');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lane Edge &amp; DAT Palette — Chrome Extensions for DAT One Dispatchers</title>
+  <title>Lane Edge - RPM Calculator &amp; Load Filter for DAT One</title>
   <meta name="description" content="Two Chrome extensions built for freight dispatchers. Lane Edge supercharges DAT One with RPM, filters, and broker emails. DAT Palette adds dark mode and pink mode to DAT One." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -81,6 +91,7 @@
     .nav-links a { font-size: .875rem; font-weight: 500; color: var(--muted); transition: color .18s; }
     .nav-links a:hover { color: var(--white); }
     .nav-cta { background: var(--blue); color: var(--white); padding: 9px 22px; border-radius: var(--radius-sm); font-size: .875rem; font-weight: 700; transition: background .18s, transform .15s; box-shadow: var(--shadow-blue); }
+    .le { font-style: italic; font-weight: inherit; }
     .nav-cta:hover { background: var(--blue-dark); transform: translateY(-1px); }
 
     /* ══════════════════════════════
@@ -143,7 +154,7 @@
       font-size: .95rem; font-weight: 700;
       box-shadow: var(--shadow-blue);
       transition: background .18s, transform .15s, box-shadow .18s;
-      animation: btnBounce 2.8s ease-in-out 1.2s infinite, btnPulse 2.8s ease-in-out 1.2s infinite;
+      animation: btnBounce 2.8s ease-in-out 1.2s 1, btnPulse 2.8s ease-in-out 1.2s 1;
     }
     .btn-primary:hover { background: var(--blue-dark); transform: translateY(-3px) scale(1.04); box-shadow: 0 18px 52px rgba(0,71,255,.38); animation: none; }
     .btn-ghost-dark {
@@ -223,7 +234,7 @@
     /* ══════════════════════════════
        WHY SECTION (white)
     ══════════════════════════════ */
-    .why-section { background: var(--white); padding: 96px 6%; }
+    .why-section { background: var(--off-white); padding: 96px 6%; }
     .why-section h2 {
       font-size: clamp(2rem, 3.5vw, 2.9rem); font-weight: 900;
       letter-spacing: -1px; color: var(--gray-900);
@@ -257,12 +268,12 @@
       background: linear-gradient(160deg, #1e2235 0%, #0e1020 100%);
     }
     .why-card--tall .why-bg img {
-      width: 100%; height: 100%; object-fit: cover; opacity: 0.55; display: block;
+      width: 100%; height: 100%; object-fit: cover; opacity: 0.78; display: block;
     }
     .why-card--tall::after {
       content: '';
       position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
-      background: linear-gradient(to top, rgba(10,11,18,0.92) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(10,11,18,0.85) 0%, transparent 100%);
       pointer-events: none;
     }
     .why-card--blue {
@@ -273,6 +284,18 @@
       background: var(--dark-card);
       border: 1px solid var(--dark-border);
     }
+    .why-card--dark .why-bg {
+      position: absolute; inset: 0;
+    }
+    .why-card--dark .why-bg img {
+      width: 100%; height: 100%; object-fit: cover; opacity: 0.45; display: block;
+    }
+    .why-card--dark::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(13,14,25,0.45);
+      pointer-events: none;
+    }
     .why-card--dark-img {
       background: var(--dark-card);
       border: 1px solid var(--dark-border);
@@ -281,12 +304,12 @@
       position: absolute; inset: 0;
     }
     .why-card--dark-img .why-bg img {
-      width: 100%; height: 100%; object-fit: cover; opacity: 0.3; display: block;
+      width: 100%; height: 100%; object-fit: cover; opacity: 0.55; display: block;
     }
     .why-card--dark-img::after {
       content: '';
       position: absolute; inset: 0;
-      background: rgba(13,14,25,0.55);
+      background: rgba(13,14,25,0.38);
       pointer-events: none;
     }
     .why-card-icon {
@@ -486,7 +509,9 @@
     .tcard-quote { font-size: .9rem; color: var(--muted2); line-height: 1.75; flex: 1; }
     .tcard-quote::before { content: '\201C'; }
     .tcard-quote::after  { content: '\201D'; }
-    .tcard-author { display: flex; flex-direction: column; gap: 3px; padding-top: 4px; border-top: 1px solid var(--dark-border); }
+    .tcard-author { display: flex; flex-direction: row; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid var(--dark-border); }
+    .tcard-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--dark-border); }
+    .tcard-author-info { display: flex; flex-direction: column; gap: 2px; }
     .tcard-name { font-size: .85rem; font-weight: 700; color: var(--white); }
     .tcard-role { font-size: .78rem; color: var(--muted); font-weight: 500; }
 
@@ -568,6 +593,11 @@
     .pc-price { font-size: 2.6rem; font-weight: 900; color: var(--gray-900); letter-spacing: -1.5px; line-height: 1; transition: all .25s; }
     .pc-per { font-size: .8rem; color: var(--gray-500); font-weight: 500; margin-left: 4px; }
     .pc-per-seat { font-size: .75rem; color: var(--gray-400, #9CA3AF); display: block; }
+    .pc-annual-note {
+      display: none; font-size: .8rem; font-weight: 500;
+      color: var(--gray-500); margin-top: -8px; margin-bottom: 16px;
+    }
+    .pc-annual-note.visible { display: block; }
 
     /* Dispatcher stepper */
     .pc-dispatcher-row {
@@ -597,13 +627,8 @@
     /* Feature list */
     .pc-features {
       list-style: none; display: flex; flex-direction: column; gap: 10px;
-      margin-bottom: 24px; max-height: 220px; overflow-y: auto;
-      scrollbar-width: thin; scrollbar-color: var(--gray-200) transparent;
-      padding-right: 2px;
+      margin-bottom: 24px;
     }
-    .pc-features::-webkit-scrollbar { width: 4px; }
-    .pc-features::-webkit-scrollbar-track { background: transparent; }
-    .pc-features::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
     .pc-features li {
       display: flex; align-items: flex-start; gap: 10px;
       font-size: .85rem; color: var(--gray-700); line-height: 1.5;
@@ -955,54 +980,130 @@
       border-radius: var(--radius-xl);
       overflow: hidden;
       border: 1px solid var(--dark-border2);
-      box-shadow: var(--shadow-dark), 0 0 60px rgba(236,72,153,0.1);
+      box-shadow: var(--shadow-dark), 0 0 60px rgba(236,72,153,0.12);
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
-    .mock-dark {
-      background: #0D0E18;
-      padding: 28px 22px;
-      min-height: 300px;
+    /* ── shared UI mock base ── */
+    .mock-dark, .mock-pink {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 9.5px;
+      overflow: hidden;
     }
-    .mock-pink {
-      background: #FFF0F7;
-      padding: 28px 22px;
-      min-height: 300px;
+    .mock-dark { background: #0D1117; }
+    .mock-pink  { background: #FDE8F3; }
+
+    /* top bar */
+    .ui-topbar {
+      padding: 7px 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 8px; font-weight: 700; letter-spacing: .5px;
     }
-    .mock-label {
-      font-size: .65rem; font-weight: 800; text-transform: uppercase;
-      letter-spacing: 1.5px; margin-bottom: 16px;
+    .mock-dark .ui-topbar  { background: #161B27; border-bottom: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.5); }
+    .mock-pink .ui-topbar  { background: #F9C8E8; border-bottom: 1px solid rgba(219,90,166,.2); color: rgba(160,40,110,.7); }
+    .ui-topbar-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .mock-dark .ui-topbar-dot { background: #10B981; }
+    .mock-pink .ui-topbar-dot  { background: #EC4899; }
+
+    /* search bar strip */
+    .ui-search {
+      padding: 6px 10px;
+      display: flex; gap: 5px; align-items: center;
+    }
+    .mock-dark .ui-search { background: #0D1117; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .mock-pink .ui-search  { background: #FDE8F3; border-bottom: 1px solid rgba(219,90,166,.15); }
+    .ui-field {
+      border-radius: 4px; padding: 3px 6px;
+      font-size: 7.5px; font-weight: 500; white-space: nowrap; overflow: hidden;
+    }
+    .mock-dark .ui-field { background: rgba(255,255,255,.07); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.1); }
+    .mock-pink .ui-field  { background: #fff; color: #555; border: 1px solid rgba(219,90,166,.3); }
+    .ui-search-btn {
+      border-radius: 4px; padding: 3px 8px;
+      font-size: 7.5px; font-weight: 700; letter-spacing: .3px;
+      background: #3B82F6; color: #fff; white-space: nowrap;
+    }
+    .mock-pink .ui-search-btn { background: #EC4899; }
+
+    /* Lane Edge filter bar */
+    .ui-le-bar {
+      padding: 5px 10px;
       display: flex; align-items: center; gap: 6px;
     }
-    .mock-dark .mock-label { color: rgba(255,255,255,0.45); }
-    .mock-pink .mock-label { color: rgba(180,60,120,0.6); }
-    .mock-label::before { content:''; width: 6px; height: 6px; border-radius: 50%; }
-    .mock-dark .mock-label::before { background: #10B981; }
-    .mock-pink .mock-label::before { background: var(--pink); }
-    .mock-row {
-      height: 11px; border-radius: 6px; margin-bottom: 9px;
+    .mock-dark .ui-le-bar { background: #0D1117; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .mock-pink .ui-le-bar  { background: #FDE8F3; border-bottom: 1px solid rgba(219,90,166,.12); }
+    .ui-le-tag {
+      font-size: 8px; font-weight: 800; letter-spacing: .3px;
+      border-radius: 4px; padding: 2px 6px;
     }
-    .mock-dark .mock-row { background: rgba(255,255,255,0.07); }
-    .mock-dark .mock-row.accent { background: rgba(0,71,255,0.4); width: 60%; }
-    .mock-dark .mock-row.wide { width: 85%; }
-    .mock-dark .mock-row.medium { width: 70%; }
-    .mock-dark .mock-row.short { width: 45%; }
-    .mock-pink .mock-row { background: rgba(236,72,153,0.1); }
-    .mock-pink .mock-row.accent { background: rgba(236,72,153,0.5); width: 60%; }
-    .mock-pink .mock-row.wide { width: 85%; }
-    .mock-pink .mock-row.medium { width: 70%; }
-    .mock-pink .mock-row.short { width: 45%; }
-    .mock-card {
-      border-radius: 8px; padding: 12px; margin-top: 12px;
+    .mock-dark .ui-le-tag { color: #fff; border: 1.5px solid rgba(255,255,255,.2); }
+    .mock-pink .ui-le-tag  { color: #B91C8A; border: 1.5px solid #EC4899; }
+    .ui-le-input {
+      border-radius: 4px; padding: 2px 6px; font-size: 7px;
+      flex: 1; min-width: 0;
     }
-    .mock-dark .mock-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
-    .mock-pink .mock-card { background: rgba(255,255,255,0.7); border: 1px solid rgba(236,72,153,0.15); }
-    .mock-card-row { height: 8px; border-radius: 4px; margin-bottom: 7px; }
-    .mock-dark .mock-card-row { background: rgba(255,255,255,0.1); }
-    .mock-dark .mock-card-row.hl { background: #10B981; width: 35%; }
-    .mock-pink .mock-card-row { background: rgba(236,72,153,0.12); }
-    .mock-pink .mock-card-row.hl { background: var(--pink); width: 35%; }
-    .mock-divider { width: 1px; background: rgba(0,0,0,0.2); position: relative; }
+    .mock-dark .ui-le-input { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); color: rgba(255,255,255,.3); }
+    .mock-pink .ui-le-input  { background: #fff; border: 1px solid rgba(219,90,166,.25); color: #aaa; }
+    .ui-le-pill {
+      font-size: 7px; font-weight: 700; border-radius: 4px; padding: 2px 7px;
+    }
+    .mock-dark .ui-le-pill { background: rgba(59,130,246,.2); color: #93C5FD; }
+    .mock-pink .ui-le-pill  { background: rgba(236,72,153,.15); color: #EC4899; }
+
+    /* results count */
+    .ui-results {
+      padding: 4px 10px 3px;
+      font-size: 7.5px; font-weight: 700;
+    }
+    .mock-dark .ui-results { color: rgba(255,255,255,.6); border-bottom: 1px solid rgba(255,255,255,.05); }
+    .mock-pink .ui-results  { color: #888; border-bottom: 1px solid rgba(219,90,166,.1); }
+
+    /* table headers */
+    .ui-thead {
+      display: grid;
+      grid-template-columns: 22px 38px 38px 26px 52px 52px 26px 22px;
+      padding: 3px 10px;
+      gap: 4px;
+    }
+    .mock-dark .ui-thead { background: rgba(255,255,255,.03); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .mock-pink .ui-thead  { background: rgba(255,255,255,.5); border-bottom: 1px solid rgba(219,90,166,.12); }
+    .ui-th {
+      font-size: 6.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+      white-space: nowrap; overflow: hidden;
+    }
+    .mock-dark .ui-th { color: rgba(255,255,255,.35); }
+    .mock-pink .ui-th  { color: rgba(160,40,110,.5); }
+
+    /* table rows */
+    .ui-row {
+      display: grid;
+      grid-template-columns: 22px 38px 38px 26px 52px 52px 26px 22px;
+      padding: 5px 10px;
+      gap: 4px;
+      align-items: center;
+    }
+    .mock-dark .ui-row { border-bottom: 1px solid rgba(255,255,255,.04); }
+    .mock-pink .ui-row  { border-bottom: 1px solid rgba(219,90,166,.08); }
+    .mock-dark .ui-row:hover { background: rgba(255,255,255,.025); }
+    .mock-pink .ui-row:hover  { background: rgba(255,255,255,.6); }
+    .ui-cell {
+      font-size: 7.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-dark .ui-cell { color: rgba(255,255,255,.7); }
+    .mock-pink .ui-cell  { color: #444; }
+    .ui-cell.muted { }
+    .mock-dark .ui-cell.muted { color: rgba(255,255,255,.3); }
+    .mock-pink .ui-cell.muted  { color: #aaa; }
+    .ui-rpm {
+      font-size: 7.5px; font-weight: 800; border-radius: 3px; padding: 1px 4px; text-align: center;
+    }
+    .ui-rpm.green { background: #16A34A; color: #fff; }
+    .ui-rpm.yellow { background: #CA8A04; color: #fff; }
+    .ui-rpm.pink  { background: #EC4899; color: #fff; }
+    .ui-rpm.pink-lt { background: rgba(236,72,153,.2); color: #9D174D; }
+    .ui-arr { font-size: 8px; }
+    .mock-dark .ui-arr { color: rgba(255,255,255,.25); }
+    .mock-pink .ui-arr  { color: #EC4899; }
 
     /* ══════════════════════════════
        DAT PALETTE — FEATURES (white)
@@ -1119,6 +1220,103 @@
       .palette-cards-grid { grid-template-columns: 1fr; }
       .palette-price-card { padding: 40px 24px; }
     }
+
+    /* ══════════════════════════════
+       MOBILE  ≤ 768px
+    ══════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* ── Nav ── */
+      nav { padding: 0 5%; height: 58px; }
+      .nav-palette-link { display: none; }          /* hide "Also: DAT Palette" */
+      .nav-cta { padding: 8px 14px; font-size: .82rem; }
+
+      /* ── Hero ── */
+      .hero { padding: 52px 5% 0; gap: 28px; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-ghost-dark {
+        width: 100%; justify-content: center; text-align: center;
+      }
+
+      /* ── Metrics ── */
+      .metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 12px;
+        padding: 28px 5%;
+      }
+      .metric-num { font-size: 1.5rem; }
+
+      /* ── General sections ── */
+      .section { padding: 64px 5%; }
+      .why-section { padding: 64px 5%; }
+      .why-section h2 { font-size: 1.9rem; margin-bottom: 36px; }
+
+      /* ── Before/After slider fix (hardcoded 960px → 200% of slider-clip) ── */
+      .slider-clip .img-before { width: 200%; max-width: none; }
+      .slider-wrap { border-radius: var(--radius-md); }
+
+      /* ── Pricing billing toggle ── */
+      .billing-toggle { flex-wrap: wrap; justify-content: center; }
+
+      /* ── Referral modal input row ── */
+      .ref-input-row { flex-direction: column; }
+      .ref-input-row .btn-referral { width: 100%; justify-content: center; }
+
+      /* ── CTA ── */
+      .cta-section { padding: 72px 5%; }
+      .btn-white, .btn-ghost-cta {
+        width: 100%; justify-content: center; text-align: center;
+      }
+      .cta-actions { flex-direction: column; align-items: stretch; max-width: 340px; margin: 0 auto; }
+
+      /* ── Footer ── */
+      .footer-bottom { flex-direction: column; text-align: center; gap: 6px; }
+
+      /* ── DAT Palette hero ── */
+      .palette-hero { padding: 56px 5%; }
+
+      /* ── DAT Palette mock: stack the two sides vertically ── */
+      .palette-mock { grid-template-columns: 1fr; }
+      .mock-dark, .mock-pink { border-bottom: 1px solid rgba(255,255,255,.06); }
+      .mock-pink { border-bottom: none; }
+
+      /* ── DAT Palette features / pricing ── */
+      .palette-features { padding: 64px 5%; }
+      .palette-pricing  { padding: 64px 5%; }
+      .palette-price-card { padding: 36px 20px; }
+    }
+
+    /* ══════════════════════════════
+       SMALL PHONES  ≤ 480px
+    ══════════════════════════════ */
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2.2rem; letter-spacing: -1.2px; }
+      .hero-sub { font-size: .95rem; }
+
+      .why-grid { grid-template-columns: 1fr !important; }
+      .why-card--tall { grid-row: auto !important; grid-column: 1 / 2 !important; min-height: 200px !important; }
+
+      .bento-section .section-title { font-size: 1.7rem; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      .referral-card { padding: 28px 20px; }
+      .referral-heading { font-size: 1.3rem; }
+
+      .footer-top { gap: 28px; }
+      .footer-col { display: none; }        /* hide link columns; keep brand + copyright */
+      .footer-brand { display: block; }
+
+      /* Palette mock: tighten on very small screens */
+      .ui-thead, .ui-row {
+        grid-template-columns: 20px 36px 36px 24px 48px 48px 22px 18px;
+        gap: 3px;
+        padding: 4px 8px;
+      }
+      .ui-topbar { padding: 6px 10px; }
+      .ui-search, .ui-le-bar { padding: 5px 8px; }
+    }
   </style>
 </head>
 <body>
@@ -1129,15 +1327,18 @@
     <div class="logo-icon">
       <svg viewBox="0 0 24 24" fill="none"><path d="M1 12V17H3C3 18.657 4.343 20 6 20C7.657 20 9 18.657 9 17H15C15 18.657 16.343 20 18 20C19.657 20 21 18.657 21 17H23V12L20 7H15V4H1V12ZM6 18C5.448 18 5 17.552 5 17C5 16.448 5.448 16 6 16C6.552 16 7 16.448 7 17C7 17.552 6.552 18 6 18ZM18 18C17.448 18 17 17.552 17 17C17 16.448 17.448 16 18 16C18.552 16 19 16.448 19 17C19 17.552 18.552 18 18 18ZM15 12V9H19.5L21.5 12H15Z" fill="white"/></svg>
     </div>
-    Lane Edge
+    <span style="font-style:italic;">Lane Edge</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#features">Lane Edge</a></li>
+    <li><a href="#features">Features</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#palette" style="color:#F9A8D4;">DAT Palette</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="https://chromewebstore.google.com/detail/laneedge/pcnnjndikjbmlgnknfeleifolghidkon" class="nav-cta">Add to Chrome &mdash; Free</a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="https://chromewebstore.google.com/detail/dat-palette/bbjakagncbfpbdkibeihgkddikgcdpgn?hl=en-US" class="nav-palette-link" style="font-size:.8rem;font-weight:600;color:#F9A8D4;white-space:nowrap;opacity:.9;">Also: DAT Palette $2.99 &#8594;</a>
+    <a href="https://chromewebstore.google.com/detail/laneedge/pcnnjndikjbmlgnknfeleifolghidkon" class="nav-cta">Add to Chrome - Free</a>
+  </div>
 </nav>
 
 <!-- ── HERO (dark) ── -->
@@ -1145,7 +1346,7 @@
   <div class="hero-text">
     <div class="hero-pill fade-up d1"><div class="dot"></div>Built for DAT One Dispatchers</div>
     <h1 class="fade-up d2">Stop Doing Mental Math<br /><span class="blue">on DAT.</span></h1>
-    <p class="hero-sub fade-up d3">Lane Edge supercharges your DAT One loadboard with instant RPM, deadhead miles, smart filters, and one-click broker emails &mdash; all without leaving the page.</p>
+    <p class="hero-sub fade-up d3">Lane Edge supercharges your DAT One loadboard with instant RPM, deadhead miles, smart filters, and one-click broker emails - all without leaving the page.</p>
     <div class="hero-actions fade-up d4">
       <a href="https://chromewebstore.google.com/detail/laneedge/pcnnjndikjbmlgnknfeleifolghidkon" class="btn-primary">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12" stroke="white" stroke-width="2"/></svg>
@@ -1153,6 +1354,7 @@
       </a>
       <a href="#features" class="btn-ghost-dark">See Features &#8594;</a>
     </div>
+    <p style="font-size:.8rem;color:rgba(255,255,255,.45);margin-top:14px;">7-day free trial &nbsp;&middot;&nbsp; No credit card required &nbsp;&middot;&nbsp; Cancel anytime</p>
     <div class="hero-star fade-up d5">
       <span class="stars-gold">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
       <span class="star-text"><strong>5.0</strong> on Chrome Web Store &nbsp;&middot;&nbsp; Trusted by freight dispatchers</span>
@@ -1168,25 +1370,24 @@
 
 <!-- ── METRICS STRIP ── -->
 <div class="metrics">
-  <div class="metric"><div class="metric-num">2&ndash;5x</div><div class="metric-lbl">Faster load evaluation</div></div>
-  <div class="metric"><div class="metric-num">$0</div><div class="metric-lbl">To start &mdash; free trial</div></div>
-  <div class="metric"><div class="metric-num">DAT One</div><div class="metric-lbl">Native integration</div></div>
+  <div class="metric"><div class="metric-num">5x</div><div class="metric-lbl">Faster load evaluation</div></div>
+  <div class="metric"><div class="metric-num">$0</div><div class="metric-lbl">To start - free trial</div></div>
+  <div class="metric"><div class="metric-num">100%</div><div class="metric-lbl">Inside DAT One — no new tabs</div></div>
   <div class="metric"><div class="metric-num">60s</div><div class="metric-lbl">Setup time</div></div>
 </div>
 
 <!-- ── WHY LANE EDGE (white) ── -->
 <section class="why-section">
-  <h2>Why dispatchers choose Lane Edge</h2>
+  <h2>Why dispatchers choose <em class="le">Lane Edge</em></h2>
   <div class="why-grid">
 
     <!-- Tall: dispatcher photo card -->
     <div class="why-card why-card--tall">
       <div class="why-bg">
-        <img src="img/dispatcher-photo.png" alt="Dispatcher using Lane Edge"
-             onerror="this.style.display='none'" />
+        <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=600&q=80&auto=format&fit=crop" alt="Person at computer" />
       </div>
       <div class="why-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
       <div class="why-card-body">
         <div class="why-stat">3 hrs</div>
@@ -1196,19 +1397,25 @@
 
     <!-- Blue: 10x faster -->
     <div class="why-card why-card--blue">
+      <div class="why-bg">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop" alt="Trucks on highway" style="opacity:0.15;width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" />
+      </div>
       <div class="why-card-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
       <div class="why-card-body">
-        <div class="why-stat">10x</div>
+        <div class="why-stat">5x</div>
         <div class="why-label">faster load evaluation</div>
       </div>
     </div>
 
     <!-- Dark: 50% less manual work -->
     <div class="why-card why-card--dark">
+      <div class="why-bg">
+        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&q=80&auto=format&fit=crop" alt="Productivity" />
+      </div>
       <div class="why-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
       </div>
       <div class="why-card-body">
         <div class="why-stat">50%</div>
@@ -1216,24 +1423,27 @@
       </div>
     </div>
 
-    <!-- Dark: 5.0 rating -->
+    <!-- Dark: loads skipped -->
     <div class="why-card why-card--dark">
+      <div class="why-bg">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80&auto=format&fit=crop" alt="Filtered loads" />
+      </div>
       <div class="why-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
       </div>
       <div class="why-card-body">
-        <div class="why-stat">5.0</div>
-        <div class="why-label">Chrome Web Store rating</div>
+        <div class="why-stat">&lt;1 sec</div>
+        <div class="why-label">to filter out a bad load</div>
       </div>
     </div>
 
     <!-- Dark with image bg: loads booked -->
     <div class="why-card why-card--dark-img">
       <div class="why-bg">
-        <img src="img/loads-bg.png" alt="" onerror="this.style.display='none'" />
+        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop" alt="Freight truck" />
       </div>
       <div class="why-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
       <div class="why-card-body">
         <div class="why-stat">$9.99</div>
@@ -1257,7 +1467,7 @@
       </div>
       <div class="b-label">RPM &amp; Deadhead</div>
       <div class="b-title">Instant Rate Per Mile on every load</div>
-      <p class="b-desc">Lane Edge calculates RPM and deadhead miles automatically. Color-coded green, yellow, and pink so you spot the best loads in a glance &mdash; no mental math required.</p>
+      <p class="b-desc">Lane Edge calculates RPM and deadhead miles automatically. Color-coded green, yellow, and pink so you spot the best loads in a glance - no mental math required.</p>
       <div class="rpm-demo">
         <div class="rpm-row top">
           <span class="rpm-route">Chattanooga, TN &rarr; North East, MD</span>
@@ -1297,7 +1507,7 @@
       </div>
       <div class="b-label">Broker Outreach</div>
       <div class="b-title">Email brokers in one click</div>
-      <p class="b-desc">Pre-filled templates with load details &mdash; origin, destination, rate, reference &mdash; let you reach brokers in seconds without leaving the page.</p>
+      <p class="b-desc">Pre-filled templates with load details - origin, destination, rate, reference - let you reach brokers in seconds without leaving the page.</p>
     </div>
 
     <div class="b-card b-card--third">
@@ -1306,7 +1516,7 @@
       </div>
       <div class="b-label">Stats Dashboard</div>
       <div class="b-title">Track your productivity daily</div>
-      <p class="b-desc">Know your emails sent, MCs copied, time saved, and loads viewed &mdash; by day, week, or month.</p>
+      <p class="b-desc">Know your emails sent, MCs copied, time saved, and loads viewed - by day, week, or month.</p>
       <div class="stats-mini">
         <div class="smi"><div class="smi-l">Emails Today</div><div class="smi-v">44</div></div>
         <div class="smi"><div class="smi-l">Time Saved</div><div class="smi-v">1h 28m</div></div>
@@ -1319,109 +1529,7 @@
       </div>
       <div class="b-label">Google Maps</div>
       <div class="b-title">One-click route map</div>
-      <p class="b-desc">Tap the map icon on any load and instantly see the full route, mileage, and drive time &mdash; directly inside DAT One.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── BEFORE / AFTER SLIDER (dark) ── -->
-<section class="section before-after">
-  <div class="text-center">
-    <div class="section-label label-blue">See the Difference</div>
-    <h2 class="section-title title-light">DAT One before &amp; after<br />Lane Edge.</h2>
-    <p class="section-sub sub-light">Drag the slider to see how Lane Edge instantly adds RPM columns, color-coded rates, filter bars, and company names to your loadboard.</p>
-  </div>
-
-  <div class="slider-wrap" id="baSlider">
-    <img class="img-after" src="img/loadboard-after-full.png" alt="DAT One with Lane Edge"
-         onerror="this.src='';this.alt='';this.closest('.slider-wrap').querySelector('.slider-placeholder').style.display='flex'" />
-    <div class="slider-clip" id="sliderClip">
-      <img class="img-before" src="img/loadboard-before.png" alt="DAT One without Lane Edge" />
-    </div>
-    <div class="slider-line" id="sliderLine">
-      <div class="slider-handle">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
-      </div>
-    </div>
-    <div class="slider-label slider-label-before"><div class="dot"></div>Before Lane Edge</div>
-    <div class="slider-label slider-label-after"><div class="dot"></div>After Lane Edge</div>
-    <div class="slider-placeholder screenshot-placeholder" style="display:none;min-height:320px;position:relative;z-index:2">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-      Save <strong>img/loadboard-before.png</strong> &amp; <strong>img/loadboard-after-full.png</strong> to enable the slider
-    </div>
-  </div>
-  <p class="slider-hint">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
-    Drag the handle left or right to compare
-  </p>
-</section>
-
-<!-- ── MAPS FEATURE (white) ── -->
-<section class="section maps-section">
-  <div class="maps-layout">
-    <div class="maps-screenshot">
-      <img src="img/maps-route.png" alt="Google Maps route via Lane Edge"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-      <div class="screenshot-placeholder" style="display:none;min-height:340px;background:var(--gray-100);color:var(--gray-500)">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Save as <strong>img/maps-route.png</strong>
-      </div>
-    </div>
-    <div class="maps-info">
-      <div class="section-label label-dark">Google Maps Integration</div>
-      <h2 class="section-title title-dark">See the full route<br />with one click.</h2>
-      <p class="section-sub sub-dark">Click the map icon on any load and Lane Edge opens Google Maps with the full route pre-plotted &mdash; so you can check drive time, tolls, and stops before committing.</p>
-      <ul class="feature-list">
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>
-          Full origin &rarr; destination route mapped instantly
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>
-          Drive time, mileage, and toll warnings visible at a glance
-        </li>
-        <li>
-          <div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>
-          No copy-pasting addresses &mdash; Lane Edge handles it automatically
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ── TABS SHOWCASE (dark) ── -->
-<section class="section tabs-section" id="stats">
-  <div class="text-center">
-    <div class="section-label label-blue">Inside the Extension</div>
-    <h2 class="section-title title-light">Three powerful tabs.<br />One streamlined tool.</h2>
-    <p class="section-sub sub-light">Lane Edge adds a panel to DAT One with everything you need &mdash; templates, live stats, and full feature settings.</p>
-  </div>
-  <div class="tabs-container">
-    <div class="tab-switcher">
-      <button class="tab-btn active" onclick="switchTab('templates', this)">Templates</button>
-      <button class="tab-btn" onclick="switchTab('stats-tab', this)">Stats</button>
-      <button class="tab-btn" onclick="switchTab('settings-tab', this)">Settings</button>
-    </div>
-    <div class="tab-panel active" id="tab-templates">
-      <div class="tab-screenshot-wrap">
-        <img src="img/tab-templates.png" alt="Lane Edge Templates tab" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-        <div class="screenshot-placeholder" style="display:none;min-height:380px">Save as <strong>img/tab-templates.png</strong></div>
-      </div>
-      <p class="tab-desc">Build custom email templates with smart variables &mdash; origin, destination, rate, reference number, and more &mdash; auto-filled from the load in front of you.</p>
-    </div>
-    <div class="tab-panel" id="tab-stats-tab">
-      <div class="tab-screenshot-wrap">
-        <img src="img/tab-stats.png" alt="Lane Edge Stats tab" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-        <div class="screenshot-placeholder" style="display:none;min-height:380px">Save as <strong>img/tab-stats.png</strong></div>
-      </div>
-      <p class="tab-desc">Track emails sent, MC numbers copied, and time saved &mdash; broken down by today, this week, and this month. See exactly how hard you&rsquo;re working.</p>
-    </div>
-    <div class="tab-panel" id="tab-settings-tab">
-      <div class="tab-screenshot-wrap">
-        <img src="img/tab-settings.png" alt="Lane Edge Settings tab" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-        <div class="screenshot-placeholder" style="display:none;min-height:380px">Save as <strong>img/tab-settings.png</strong></div>
-      </div>
-      <p class="tab-desc">Toggle every Lane Edge feature on or off individually &mdash; filters bar, RPM column, email button, Maps icon, rate color coding, and more.</p>
+      <p class="b-desc">Tap the map icon on any load and instantly see the full route, mileage, and drive time - directly inside DAT One.</p>
     </div>
   </div>
 </section>
@@ -1442,7 +1550,7 @@
     <div class="step-block">
       <div class="step-num">2</div>
       <h3>Open DAT One &amp; Set Your Filters</h3>
-      <p>Lane Edge auto-activates the moment you load DAT One. Set your min RPM, rate, and mileage thresholds in the sidebar &mdash; takes under a minute.</p>
+      <p>Lane Edge auto-activates the moment you load DAT One. Set your min RPM, rate, and mileage thresholds in the sidebar - takes under a minute.</p>
     </div>
     <div class="step-block">
       <div class="step-num">3</div>
@@ -1452,27 +1560,36 @@
   </div>
 </section>
 
-<!-- ── STATS SECTION (dark) ── -->
-<section class="section stats-section" id="stats-section">
-  <div class="stats-layout">
-    <div class="stats-cards-grid">
-      <div class="s-card"><div class="s-lbl">Emails Sent Today</div><div class="s-val">44</div><div class="s-chg">&#8593; This week: 44</div></div>
-      <div class="s-card"><div class="s-lbl">Time Saved Today</div><div class="s-val">2m</div><div class="s-chg">&#8593; This week: 1h 28m</div></div>
-      <div class="s-card"><div class="s-lbl">MC# Copied Today</div><div class="s-val">0</div><div class="s-chg">This week: 14</div></div>
-      <div class="s-card"><div class="s-lbl">Emails This Month</div><div class="s-val">44</div><div class="s-chg">Personal best</div></div>
+<!-- ── BEFORE / AFTER SLIDER (dark) ── -->
+<section class="section before-after">
+  <div class="text-center">
+    <div class="section-label label-blue">See the Difference</div>
+    <h2 class="section-title title-light">DAT One before &amp; after<br /><em class="le">Lane Edge.</em></h2>
+    <p class="section-sub sub-light">Drag the slider to see how Lane Edge instantly adds RPM columns, color-coded rates, filter bars, and company names to your loadboard.</p>
+  </div>
+
+  <div class="slider-wrap" id="baSlider">
+    <img class="img-after" src="img/loadboard-after-full.png" alt="DAT One with Lane Edge"
+         onerror="this.src='';this.alt='';this.closest('.slider-wrap').querySelector('.slider-placeholder').style.display='flex'" />
+    <div class="slider-clip" id="sliderClip">
+      <img class="img-before" src="img/loadboard-before.png" alt="DAT One without Lane Edge" />
     </div>
-    <div class="stats-info">
-      <div class="section-label label-blue">Stats Tab</div>
-      <h2 class="section-title title-light">Know your numbers.<br />Improve every day.</h2>
-      <p class="section-sub sub-light">The Lane Edge Stats tab tracks your activity automatically so you can see exactly what&rsquo;s working.</p>
-      <ul>
-        <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>Emails sent by day, week, and month</li>
-        <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>MC numbers copied over time</li>
-        <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>Time saved tracked automatically</li>
-        <li><div class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg></div>Motivational milestones as you go</li>
-      </ul>
+    <div class="slider-line" id="sliderLine">
+      <div class="slider-handle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
+      </div>
+    </div>
+    <div class="slider-label slider-label-before"><div class="dot"></div>Before <em class="le">Lane Edge</em></div>
+    <div class="slider-label slider-label-after"><div class="dot"></div>After <em class="le">Lane Edge</em></div>
+    <div class="slider-placeholder screenshot-placeholder" style="display:none;min-height:320px;position:relative;z-index:2">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Save <strong>img/loadboard-before.png</strong> &amp; <strong>img/loadboard-after-full.png</strong> to enable the slider
     </div>
   </div>
+  <p class="slider-hint">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
+    Drag the handle left or right to compare
+  </p>
 </section>
 
 <!-- ── TESTIMONIALS (dark) ── -->
@@ -1487,32 +1604,44 @@
       <div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
       <p class="tcard-quote">This extension saves me at least an hour every single day. I can see RPM instantly on every load and filter out the garbage without thinking. Game changer for my workflow.</p>
       <div class="tcard-author">
-        <span class="tcard-name">Marcus T.</span>
-        <span class="tcard-role">Independent Dispatcher &mdash; 4 trucks</span>
+        <img class="tcard-avatar" src="https://i.pravatar.cc/80?img=12" alt="Marcus T." />
+        <div class="tcard-author-info">
+          <span class="tcard-name">Marcus T.</span>
+          <span class="tcard-role">Independent Dispatcher - 4 trucks</span>
+        </div>
       </div>
     </div>
     <div class="tcard">
       <div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
       <p class="tcard-quote">The color coding alone is worth it. Green means book it, pink means skip it. I stopped second-guessing myself on rates and started moving faster than ever.</p>
       <div class="tcard-author">
-        <span class="tcard-name">Destiny R.</span>
-        <span class="tcard-role">Freight Dispatcher &mdash; 2 years on DAT</span>
+        <img class="tcard-avatar" src="https://i.pravatar.cc/80?img=47" alt="Destiny R." />
+        <div class="tcard-author-info">
+          <span class="tcard-name">Destiny R.</span>
+          <span class="tcard-role">Freight Dispatcher - 2 years on DAT</span>
+        </div>
       </div>
     </div>
     <div class="tcard">
       <div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
       <p class="tcard-quote">I used to copy-paste broker emails one by one. Now I fire them off in seconds with the template tool. My outreach volume tripled in the first week.</p>
       <div class="tcard-author">
-        <span class="tcard-name">Jerome K.</span>
-        <span class="tcard-role">Dispatch Agency Owner</span>
+        <img class="tcard-avatar" src="https://i.pravatar.cc/80?img=33" alt="Jerome K." />
+        <div class="tcard-author-info">
+          <span class="tcard-name">Jerome K.</span>
+          <span class="tcard-role">Dispatch Agency Owner</span>
+        </div>
       </div>
     </div>
     <div class="tcard">
       <div class="tcard-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
       <p class="tcard-quote">Finally something built for dispatchers, not just carriers. The deadhead column and filter bar are exactly what I needed. Wish I found this sooner.</p>
       <div class="tcard-author">
-        <span class="tcard-name">Alicia M.</span>
-        <span class="tcard-role">OTR Dispatcher &mdash; 6 drivers</span>
+        <img class="tcard-avatar" src="https://i.pravatar.cc/80?img=44" alt="Alicia M." />
+        <div class="tcard-author-info">
+          <span class="tcard-name">Alicia M.</span>
+          <span class="tcard-role">OTR Dispatcher - 6 drivers</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1573,14 +1702,13 @@
         <div class="pc-price-row">
           <sup class="pc-dollar">$</sup>
           <span class="pc-price" data-monthly="9.99" data-annual="8.49" id="price-pro">9.99</span>
-          <span class="pc-per">/ mo <span class="pc-per-seat" id="seat-pro"></span></span>
+          <span class="pc-per">/ <span id="period-pro">mo</span></span>
         </div>
+        <p id="annual-note-pro" class="pc-annual-note"></p>
         <div class="pc-dispatcher-row">
           <span class="pc-dispatcher-lbl">Dispatchers:</span>
-          <div class="pc-stepper pc-stepper--featured">
-            <button class="pc-step-btn" onclick="changeSeats('pro',-1)">&#8722;</button>
-            <span class="pc-stepper-val" id="seats-pro">1</span>
-            <button class="pc-step-btn" onclick="changeSeats('pro',1)">&#43;</button>
+          <div class="pc-stepper pc-stepper--fixed">
+            <span class="pc-stepper-val">1</span>
           </div>
         </div>
       </div>
@@ -1595,27 +1723,14 @@
       <a href="https://chromewebstore.google.com/detail/laneedge/pcnnjndikjbmlgnknfeleifolghidkon" class="pc-btn pc-btn--pro">Get Pro</a>
     </div>
 
-    <!-- TEAM — Coming Soon -->
-    <div class="pc-card" style="opacity:.65;pointer-events:none;filter:grayscale(0.3);">
-      <div class="pc-badge" style="background:var(--gray-500);color:var(--white);">Coming Soon</div>
-      <div class="pc-top">
-        <div class="pc-name">Team</div>
-        <p class="pc-desc">For dispatch agencies: shared tools, team oversight, and admin controls.</p>
-        <div class="pc-price-row">
-          <sup class="pc-dollar" style="opacity:.5;">$</sup>
-          <span style="font-size:3.2rem;font-weight:900;color:rgba(255,255,255,.35);line-height:1;">??</span>
-          <span class="pc-per">/ mo per seat</span>
-        </div>
+    <!-- TEAM — Contact -->
+    <div class="pc-card" style="border-style:dashed;border-color:var(--gray-300);background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px 32px;gap:0;">
+      <div style="width:52px;height:52px;background:var(--gray-100);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
-      <ul class="pc-features">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Everything in Pro</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Team admin dashboard</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Shared email templates</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Per-dispatcher productivity tracking</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Centralized billing</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>Dedicated account support</li>
-      </ul>
-      <button disabled class="pc-btn pc-btn--outline" style="cursor:not-allowed;opacity:.5;">Coming Soon</button>
+      <div class="pc-name" style="font-size:1.3rem;margin-bottom:10px;">Running a team?</div>
+      <p class="pc-desc" style="min-height:auto;margin-bottom:28px;">Shared templates, per-dispatcher stats, centralized billing, and admin controls. Let's build the right plan for your agency.</p>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=support@laneedge.app&su=Team%20Plan%20Inquiry&body=Hi%2C%20I%27m%20interested%20in%20a%20team%20plan%20for%20my%20dispatch%20agency." target="_blank" rel="noopener" class="pc-btn pc-btn--outline" style="border-color:var(--gray-400);">Get in Touch &rarr;</a>
     </div>
 
   </div>
@@ -1625,40 +1740,6 @@
     <div class="security-badge">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
       We never store your DAT login credentials
-    </div>
-  </div>
-</section>
-
-<!-- ── FAQ (dark) ── -->
-<section class="section faq-section" id="faq">
-  <div class="text-center">
-    <div class="section-label label-blue">FAQ</div>
-    <h2 class="section-title title-light">Common questions.</h2>
-  </div>
-  <div class="faq-list">
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Does Lane Edge work with DAT One?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Yes &mdash; Lane Edge is built specifically for the DAT One loadboard. It injects directly into the DAT One interface so everything works seamlessly without switching tabs or windows.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Do I need a DAT subscription to use Lane Edge?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Yes, you need an active DAT One subscription. Lane Edge enhances your existing DAT One account &mdash; it doesn&rsquo;t replace it.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">How does the free trial work?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Your free trial gives you 7 days of full access to every Lane Edge feature with no credit card required. When your trial ends, subscribe for $9.99/month to keep using it.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is my data safe?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Yes. Lane Edge only reads load data from DAT One to display RPM and filters. Your preferences are stored locally in your browser. We do not sell your data. Read our full <a href="/privacy-policy.html">Privacy Policy</a>.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-icon">+</span></button>
-      <div class="faq-a">Absolutely. No contracts or commitments. Cancel at any time and retain access through the end of your billing period.</div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">I have a question not listed here.<span class="faq-icon">+</span></button>
-      <div class="faq-a">No problem &mdash; reach out at <a href="mailto:support@laneedge.app">support@laneedge.app</a> and we&rsquo;ll get back to you quickly.</div>
     </div>
   </div>
 </section>
@@ -1676,7 +1757,7 @@
     <div class="referral-body">
       <div class="referral-eyebrow">Refer a Friend</div>
       <div class="referral-heading">Get 1 Month Free for Every Dispatcher You Refer</div>
-      <p class="referral-desc">Know a fellow dispatcher grinding on DAT? Send them your link. When they subscribe, <strong>you both get a free month</strong> &mdash; no limits on how many friends you refer.</p>
+      <p class="referral-desc">Know a fellow dispatcher grinding on DAT? Send them your link. When they subscribe, <strong>you both get a free month</strong> - no limits on how many friends you refer.</p>
     </div>
     <div class="referral-action">
       <button class="btn-referral" onclick="openRefModal()">Get My Referral Link &#8594;</button>
@@ -1687,7 +1768,7 @@
 
 <!-- ── CTA (blue) ── -->
 <section class="cta-section">
-  <h2>Start dispatching faster<br /><span>with Lane Edge</span></h2>
+  <h2>Start dispatching faster<br /><span>with <em class="le">Lane Edge</em></span></h2>
   <p>Join dispatchers already using Lane Edge to find better loads and book more freight.</p>
   <div class="cta-actions">
     <a href="https://chromewebstore.google.com/detail/laneedge/pcnnjndikjbmlgnknfeleifolghidkon" class="btn-white">
@@ -1709,7 +1790,7 @@
 <!-- ── PRODUCT DIVIDER ── -->
 <div class="product-divider">
   <div class="product-divider-line"></div>
-  <span class="product-divider-label">Also from Lane Edge</span>
+  <span class="product-divider-label">Also from <em class="le">Lane Edge</em></span>
   <div class="product-divider-line"></div>
 </div>
 
@@ -1720,7 +1801,7 @@
     <h2>Give DAT One a <span class="pink">Fresh Look</span></h2>
     <p class="palette-hero-sub">Dark mode. Pink mode. Choose the theme that fits you — easier on your eyes, built to make your workspace feel like yours. More themes are on the way.</p>
     <div class="palette-actions">
-      <a href="https://chromewebstore.google.com/detail/dat-palette/bbjakagncbfpbdkibeihgkddikgcdpgn" class="btn-pink">
+      <a href="https://chromewebstore.google.com/detail/dat-palette/bbjakagncbfpbdkibeihgkddikgcdpgn?hl=en-US" class="btn-pink">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12" stroke="white" stroke-width="2"/></svg>
         Add DAT Palette — $2.99
       </a>
@@ -1730,47 +1811,182 @@
       <span class="stars-gold" style="color:var(--pink);">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
       <span class="star-text"><strong style="color:var(--white);">One-time</strong> purchase — yours forever</span>
     </div>
+    <p style="margin-top:14px;font-size:.8rem;color:rgba(249,168,212,0.6);display:flex;align-items:center;gap:6px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Works alongside <em class="le">Lane Edge</em> - use both at the same time
+    </p>
   </div>
 
-  <!-- Dual-mode visual mock -->
+  <!-- Dual-mode visual mock — realistic DAT One UI replica -->
   <div class="palette-visual">
     <div class="palette-mock">
-      <!-- Dark mode side -->
+
+      <!-- ── Dark Mode side ── -->
       <div class="mock-dark">
-        <div class="mock-label">Dark Mode</div>
-        <div class="mock-row wide"></div>
-        <div class="mock-row accent"></div>
-        <div class="mock-row medium"></div>
-        <div class="mock-row short"></div>
-        <div class="mock-card">
-          <div class="mock-card-row" style="width:80%"></div>
-          <div class="mock-card-row hl"></div>
-          <div class="mock-card-row" style="width:55%"></div>
+        <div class="ui-topbar">
+          <div class="ui-topbar-dot"></div>
+          Dark Mode
         </div>
-        <div class="mock-card" style="margin-top:8px;">
-          <div class="mock-card-row" style="width:75%"></div>
-          <div class="mock-card-row hl"></div>
-          <div class="mock-card-row" style="width:60%"></div>
+        <div class="ui-search">
+          <div class="ui-field" style="flex:1.2">Crest Hill, IL</div>
+          <div class="ui-field" style="width:24px">50</div>
+          <div class="ui-field" style="flex:1.5">IL,IN,MI,MN,OH,WI</div>
+          <div class="ui-field" style="flex:1.3">Vans (Standard)</div>
+          <div class="ui-search-btn">SEARCH</div>
+        </div>
+        <div class="ui-le-bar">
+          <div class="ui-le-tag">Lane Edge</div>
+          <div class="ui-le-input">Max Miles</div>
+          <div class="ui-le-input">Min Miles</div>
+          <div class="ui-le-input">Min Rate</div>
+          <div class="ui-le-pill">Hide Dupes</div>
+        </div>
+        <div class="ui-results">34 Results &nbsp;+22 Similar</div>
+        <div class="ui-thead">
+          <div class="ui-th">Age</div>
+          <div class="ui-th">Rate</div>
+          <div class="ui-th">RPM+DH</div>
+          <div class="ui-th">Trip</div>
+          <div class="ui-th">Origin</div>
+          <div class="ui-th">Destination</div>
+          <div class="ui-th">Pick Up</div>
+          <div class="ui-th">EQ</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">0m</div>
+          <div class="ui-cell">$1,300</div>
+          <div class="ui-rpm green">$4.59</div>
+          <div class="ui-cell muted">242</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Flora, IL</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">3m</div>
+          <div class="ui-cell">$1,100</div>
+          <div class="ui-rpm green">$8.33</div>
+          <div class="ui-cell muted">91</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Rockford, IL</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">6m</div>
+          <div class="ui-cell">$1,500</div>
+          <div class="ui-rpm green">$3.50</div>
+          <div class="ui-cell muted">386</div>
+          <div class="ui-cell">Bensenville, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Lockbourne, OH</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">8m</div>
+          <div class="ui-cell">$1,500</div>
+          <div class="ui-rpm yellow">$2.85</div>
+          <div class="ui-cell muted">428</div>
+          <div class="ui-cell">Blue Is., IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Minneapolis, MN</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">9m</div>
+          <div class="ui-cell">$1,100</div>
+          <div class="ui-rpm green">$4.41</div>
+          <div class="ui-cell muted">186</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Clayton, IN</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
         </div>
       </div>
-      <!-- Pink mode side -->
+
+      <!-- ── Pink Mode side ── -->
       <div class="mock-pink">
-        <div class="mock-label">Pink Mode</div>
-        <div class="mock-row wide"></div>
-        <div class="mock-row accent"></div>
-        <div class="mock-row medium"></div>
-        <div class="mock-row short"></div>
-        <div class="mock-card">
-          <div class="mock-card-row" style="width:80%"></div>
-          <div class="mock-card-row hl"></div>
-          <div class="mock-card-row" style="width:55%"></div>
+        <div class="ui-topbar">
+          <div class="ui-topbar-dot"></div>
+          Pink Mode
         </div>
-        <div class="mock-card" style="margin-top:8px;">
-          <div class="mock-card-row" style="width:75%"></div>
-          <div class="mock-card-row hl"></div>
-          <div class="mock-card-row" style="width:60%"></div>
+        <div class="ui-search">
+          <div class="ui-field" style="flex:1.2">Crest Hill, IL</div>
+          <div class="ui-field" style="width:24px">50</div>
+          <div class="ui-field" style="flex:1.5">IL,IN,MI,MN,OH,WI</div>
+          <div class="ui-field" style="flex:1.3">Vans (Standard)</div>
+          <div class="ui-search-btn">SEARCH</div>
+        </div>
+        <div class="ui-le-bar">
+          <div class="ui-le-tag">Lane Edge ♥</div>
+          <div class="ui-le-input">Max Miles</div>
+          <div class="ui-le-input">Min Miles</div>
+          <div class="ui-le-input">Min Rate</div>
+          <div class="ui-le-pill">Hide Dupes</div>
+        </div>
+        <div class="ui-results">34 Results &nbsp;+22 Similar</div>
+        <div class="ui-thead">
+          <div class="ui-th">Age</div>
+          <div class="ui-th">Rate</div>
+          <div class="ui-th">RPM+DH</div>
+          <div class="ui-th">Trip</div>
+          <div class="ui-th">Origin</div>
+          <div class="ui-th">Destination</div>
+          <div class="ui-th">Pick Up</div>
+          <div class="ui-th">EQ</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">0m</div>
+          <div class="ui-cell">$1,300</div>
+          <div class="ui-rpm pink">$4.59</div>
+          <div class="ui-cell muted">242</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Flora, IL</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">3m</div>
+          <div class="ui-cell">$1,100</div>
+          <div class="ui-rpm pink">$8.33</div>
+          <div class="ui-cell muted">91</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Rockford, IL</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">6m</div>
+          <div class="ui-cell">$1,500</div>
+          <div class="ui-rpm pink">$3.50</div>
+          <div class="ui-cell muted">386</div>
+          <div class="ui-cell">Bensenville, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Lockbourne, OH</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">8m</div>
+          <div class="ui-cell">$1,500</div>
+          <div class="ui-rpm pink-lt">$2.85</div>
+          <div class="ui-cell muted">428</div>
+          <div class="ui-cell">Blue Is., IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Minneapolis, MN</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
+        </div>
+        <div class="ui-row">
+          <div class="ui-cell muted">9m</div>
+          <div class="ui-cell">$1,100</div>
+          <div class="ui-rpm pink">$4.41</div>
+          <div class="ui-cell muted">186</div>
+          <div class="ui-cell">Chicago, IL</div>
+          <div class="ui-cell"><span class="ui-arr">→</span> Clayton, IN</div>
+          <div class="ui-cell">5/8</div>
+          <div class="ui-cell muted">V</div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -1797,7 +2013,7 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="#EC4899" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#EC4899" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
       <h3>Pink Mode</h3>
-      <p>A soft, light-pink theme built with women dispatchers in mind. Keeps DAT One bright and readable while giving your workspace a personal touch.</p>
+      <p>A soft, light-pink theme that keeps DAT One bright and readable. Easy on the eyes during long sessions and gives your workspace a personal touch.</p>
       <span class="palette-tag">Available Now</span>
     </div>
 
@@ -1816,7 +2032,7 @@
 <!-- ── DAT PALETTE PRICING ── -->
 <section class="palette-pricing">
   <h2>One Price. Everything Included.</h2>
-  <p>No subscriptions, no tiers. Pay once and get DAT Palette — including every theme we release in the future.</p>
+  <p>Pay once and own it forever — every theme we ever release, included at no extra charge.</p>
 
   <div class="palette-price-card">
     <div class="palette-price-badge">One-Time Purchase</div>
@@ -1828,8 +2044,7 @@
         <span style="font-size:2rem;font-weight:900;color:var(--white);line-height:1;">.99</span>
       </div>
     </div>
-    <div class="palette-price-once">Pay once &mdash; own it forever</div>
-    <div class="palette-price-sub">No monthly fees. No renewals.</div>
+    <div class="palette-price-sub">Less than a coffee. Yours forever.</div>
 
     <ul class="palette-features-list">
       <li>
@@ -1850,14 +2065,64 @@
       </li>
       <li>
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>
-        Works with Lane Edge side-by-side
+        Works with <em class="le">Lane Edge</em> side-by-side
       </li>
     </ul>
 
-    <a href="https://chromewebstore.google.com/detail/dat-palette/bbjakagncbfpbdkibeihgkddikgcdpgn" class="btn-pink-lg">
+    <a href="https://chromewebstore.google.com/detail/dat-palette/bbjakagncbfpbdkibeihgkddikgcdpgn?hl=en-US" class="btn-pink-lg">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M12 8C14.2 8 16 9.8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12" stroke="white" stroke-width="2"/></svg>
       Get DAT Palette — $2.99
     </a>
+  </div>
+</section>
+
+<!-- ── FAQ (dark) ── -->
+<section class="section faq-section" id="faq">
+  <div class="text-center">
+    <div class="section-label label-blue">FAQ</div>
+    <h2 class="section-title title-light">Common questions.</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does Lane Edge work with DAT One?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes - Lane Edge is built specifically for the DAT One loadboard. It injects directly into the DAT One interface so everything works seamlessly without switching tabs or windows.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does Lane Edge work with DAT One Pro?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes - Lane Edge works with all DAT One plans, including DAT One Pro. Whether you&rsquo;re on the standard or Pro tier, Lane Edge adds RPM calculations, smart filters, and broker email templates directly inside your existing loadboard view.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need a DAT subscription to use Lane Edge?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes, you need an active DAT One subscription. Lane Edge enhances your existing DAT One account - it doesn&rsquo;t replace it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How does the free trial work?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Your free trial gives you 7 days of full access to every Lane Edge feature with no credit card required. When your trial ends, subscribe for $9.99/month to keep using it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is my data safe?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes. Lane Edge only reads load data from DAT One to display RPM and filters. Your preferences are stored locally in your browser. We do not sell your data. Read our full <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Absolutely. No contracts or commitments. Cancel at any time and retain access through the end of your billing period.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is DAT Palette?<span class="faq-icon">+</span></button>
+      <div class="faq-a">DAT Palette is a separate Chrome extension that changes the look of DAT One. It adds a dark mode and a pink mode so you can reduce eye strain or just make your workspace feel like yours. It&rsquo;s a one-time $2.99 purchase — no subscription.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Can I use DAT Palette and Lane Edge at the same time?<span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes — they&rsquo;re two separate extensions and work perfectly side by side. DAT Palette changes how DAT One looks, while Lane Edge adds tools like RPM, filters, and email templates. Many dispatchers use both together.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do future DAT Palette themes cost extra?<span class="faq-icon">+</span></button>
+      <div class="faq-a">No. Your $2.99 covers everything — including every theme we release in the future. Pay once and you&rsquo;re set.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">I have a question not listed here.<span class="faq-icon">+</span></button>
+      <div class="faq-a">No problem - reach out at <a href="mailto:support@laneedge.app">support@laneedge.app</a> and we&rsquo;ll get back to you quickly.</div>
+    </div>
   </div>
 </section>
 
@@ -1878,7 +2143,7 @@
 
     <!-- Step 1: Enter email -->
     <div class="ref-step active" id="refStep1">
-      <div class="ref-label">Your Lane Edge email</div>
+      <div class="ref-label">Your <em class="le">Lane Edge</em> email</div>
       <div class="ref-input-row">
         <input type="email" class="ref-input" id="refEmailInput" placeholder="you@example.com" />
         <button class="btn-referral" onclick="generateRefLink()">Generate &#8594;</button>
@@ -1965,7 +2230,7 @@
       <h3>12. Governing Law</h3>
       <p>These Terms are governed by the laws of the United States. Any disputes shall be resolved in the courts of competent jurisdiction.</p>
       <h3>13. Contact Us</h3>
-      <p>Questions about these Terms? Reach us at <a href="mailto:support@laneedge.com">support@laneedge.com</a></p>
+      <p>Questions about these Terms? Reach us at <a href="mailto:support@laneedge.app">support@laneedge.app</a></p>
     </div>
   </div>
 </div>
@@ -2016,7 +2281,7 @@
       <h3>8. Changes to This Policy</h3>
       <p>We may update this policy and will note the date of changes at the top of this page.</p>
       <h3>9. Contact Us</h3>
-      <p>Lane Edge &mdash; Email: <a href="mailto:support@laneedge.com">support@laneedge.com</a></p>
+      <p>Lane Edge - Email: <a href="mailto:support@laneedge.app">support@laneedge.app</a></p>
     </div>
   </div>
 </div>
@@ -2029,12 +2294,12 @@
         <div class="logo-icon">
           <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M1 12V17H3C3 18.657 4.343 20 6 20C7.657 20 9 18.657 9 17H15C15 18.657 16.343 20 18 20C19.657 20 21 18.657 21 17H23V12L20 7H15V4H1V12ZM6 18C5.448 18 5 17.552 5 17C5 16.448 5.448 16 6 16C6.552 16 7 16.448 7 17C7 17.552 6.552 18 6 18ZM18 18C17.448 18 17 17.552 17 17C17 16.448 17.448 16 18 16C18.552 16 19 16.448 19 17C19 17.552 18.552 18 18 18ZM15 12V9H19.5L21.5 12H15Z" fill="white"/></svg>
         </div>
-        Lane Edge
+        <em class="le">Lane Edge</em>
       </div>
       <p>Two Chrome extensions built for freight dispatchers. Work smarter on DAT One.</p>
     </div>
     <div class="footer-col">
-      <h4>Lane Edge</h4>
+      <h4><em class="le">Lane Edge</em></h4>
       <ul>
         <li><a href="#features">Features</a></li>
         <li><a href="#how">How It Works</a></li>
@@ -2054,16 +2319,16 @@
       <h4>Support</h4>
       <ul>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="mailto:support@laneedge.app">Contact Us</a></li>
+        <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=support@laneedge.app" target="_blank" rel="noopener">Contact Us</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>&copy; 2026 Lane Edge &amp; DAT Palette. All rights reserved.</span>
+    <span>&copy; 2026 <em class="le">Lane Edge</em> &amp; DAT Palette. All rights reserved.</span>
     <span>
-      <a href="#" onclick="document.getElementById('ppOverlay').classList.add('open');return false;">Privacy Policy</a>
+      <a href="/privacy-policy">Privacy Policy</a>
       &middot;
-      <a href="#" onclick="document.getElementById('tosOverlay').classList.add('open');return false;">Terms of Service</a>
+      <a href="/terms-of-service">Terms of Service</a>
     </span>
   </div>
 </footer>
@@ -2124,17 +2389,30 @@
 
   function updateAllPrices() {
     ['pro'].forEach(function(plan) {
-      var el = document.getElementById('price-' + plan);
-      var seatEl = document.getElementById('seat-' + plan);
+      var el       = document.getElementById('price-'       + plan);
+      var periodEl = document.getElementById('period-'      + plan);
+      var noteEl   = document.getElementById('annual-note-' + plan);
       if (!el) return;
-      var base = parseFloat(el.getAttribute('data-' + billingMode));
-      var total = (base * seats[plan]).toFixed(2);
-      // Show total if >1 seat, else show per-seat price
-      el.textContent = total;
-      if (seats[plan] > 1) {
-        seatEl.textContent = '(' + seats[plan] + ' seats)';
+
+      var monthlyRate = parseFloat(el.getAttribute('data-monthly'));
+      var annualRate  = parseFloat(el.getAttribute('data-annual'));
+      var n = seats[plan];
+
+      if (billingMode === 'annual') {
+        // Big number = full year total
+        var yearTotal   = (annualRate * 12 * n).toFixed(2);
+        var moEquiv     = (annualRate * n).toFixed(2);
+        el.textContent  = yearTotal;
+        if (periodEl) periodEl.textContent = 'yr';
+        if (noteEl) {
+          noteEl.textContent = '$' + moEquiv + ' / mo  ·  save 15%';
+          noteEl.classList.add('visible');
+        }
       } else {
-        seatEl.textContent = billingMode === 'annual' ? 'billed annually' : '';
+        var moTotal    = (monthlyRate * n).toFixed(2);
+        el.textContent = moTotal;
+        if (periodEl) periodEl.textContent = 'mo';
+        if (noteEl)   noteEl.classList.remove('visible');
       }
     });
   }
@@ -2257,14 +2535,8 @@
     wrap.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
     window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
     window.addEventListener('touchend', () => { dragging = false; });
-    function syncWidth() {
-      const w = wrap.offsetWidth;
-      const img = wrap.querySelector('.img-before');
-      if (img) img.style.width = w + 'px';
-    }
-    syncWidth();
-    window.addEventListener('resize', syncWidth);
   })();
+
 </script>
 </body>
 </html>
